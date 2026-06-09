@@ -5,10 +5,10 @@
   <div class="h-16 flex items-center justify-between px-6 md:px-8 max-w-[1400px] mx-auto w-full">
     <!-- Left: Logo -->
     <div class="flex items-center gap-3">
-      <a href="/" class="flex items-center gap-2.5 group focus:outline-none" aria-label="QR Guy Home">
+      <a href="/" class="flex items-center gap-2.5 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/20 rounded-md p-1 -m-1" aria-label="QR Guy Home">
         <!-- QR Guy Logo -->
         <div class="relative w-7 h-7 flex items-center justify-center text-ink group-hover:scale-105 transition-transform">
-          <svg viewBox="0 0 100 100" class="w-6 h-6 fill-current">
+          <svg viewBox="0 0 100 100" class="w-6 h-6 fill-current" aria-hidden="true">
             <!-- Top-left outer and inner squares -->
             <rect x="0" y="0" width="35" height="35" rx="5" fill="none" stroke="currentColor" stroke-width="8"/>
             <rect x="10" y="10" width="15" height="15" rx="1.5" fill="currentColor"/>
@@ -25,7 +25,7 @@
             <rect x="83" y="83" width="17" height="17" rx="2" fill="currentColor"/>
           </svg>
         </div>
-        <span class="font-sans font-bold text-xl tracking-tight text-ink">QR Guy</span>
+        <span class="font-sans font-bold text-xl tracking-tight text-ink">QR&nbsp;Guy</span>
       </a>
       <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full border border-hairline bg-canvas-soft text-body text-[11px] font-mono font-medium">
         v1.0.0
@@ -37,15 +37,15 @@
       <!-- Theme Toggle Button -->
       <button 
         id="theme-toggle" 
-        class="w-9 h-9 rounded-md flex items-center justify-center text-body hover:text-ink border border-hairline hover:bg-canvas-soft-2 transition-all cursor-pointer focus:outline-none"
+        class="group w-9 h-9 rounded-md flex items-center justify-center text-body hover:text-ink border border-hairline hover:bg-canvas-soft-2 transition-[color,background-color,border-color] duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/20"
         aria-label="Toggle dark mode"
       >
         <!-- Sun icon (shown in light mode) -->
-        <svg id="sun-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4.5 h-4.5 hidden dark:block">
+        <svg id="sun-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4.5 h-4.5 transition-transform duration-300 group-hover:rotate-12 group-active:scale-90 hidden dark:block" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m0 13.5V21M5.22 5.22l1.59 1.59m10.38 10.38l1.59 1.59M12 6.75a5.25 5.25 0 1 0 0 10.5 5.25 5.25 0 0 0 0-10.5ZM3 12h2.25m13.5 0H21M5.22 18.78l1.59-1.59m10.38-10.38l1.59-1.59" />
         </svg>
         <!-- Moon icon (shown in dark mode) -->
-        <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4.5 h-4.5 dark:hidden">
+        <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4.5 h-4.5 transition-transform duration-300 group-hover:rotate-12 group-active:scale-90 dark:hidden" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
         </svg>
       </button>
@@ -55,10 +55,10 @@
         href="https://github.com/Aftab016/qrguy.com" 
         target="_blank" 
         rel="noopener noreferrer" 
-        class="w-9 h-9 rounded-md flex items-center justify-center text-body hover:text-ink border border-hairline hover:bg-canvas-soft-2 transition-all focus:outline-none"
+        class="group w-9 h-9 rounded-md flex items-center justify-center text-body hover:text-ink border border-hairline hover:bg-canvas-soft-2 transition-[color,background-color,border-color] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/20"
         aria-label="GitHub Repository"
       >
-        <svg class="w-4.5 h-4.5 fill-current" viewBox="0 0 16 16">
+        <svg class="w-4.5 h-4.5 fill-current transition-transform duration-200 group-hover:scale-110 group-active:scale-95" viewBox="0 0 16 16" aria-hidden="true">
           <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
         </svg>
       </a>
@@ -66,7 +66,7 @@
       <!-- CTA Button -->
       <button 
         data-action="start-generating" 
-        class="hidden sm:inline-flex items-center justify-center px-4 h-9 text-xs font-semibold rounded-md bg-primary text-on-primary hover:opacity-90 active:scale-98 transition-all cursor-pointer focus:outline-none shadow-level-2"
+        class="hidden sm:inline-flex items-center justify-center px-4 h-9 text-xs font-semibold rounded-md bg-primary text-on-primary hover:opacity-90 active:scale-98 transition-[opacity,transform] duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 shadow-level-2"
       >
         Start Generating
       </button>
@@ -76,29 +76,37 @@
   <!-- Bottom Deck: Sub-Navigation -->
   <div class="border-t border-hairline w-full bg-canvas/30">
     <div class="max-w-[1400px] mx-auto px-6 md:px-8 flex items-center justify-between overflow-x-auto scrollbar-none">
-      <nav class="flex gap-6 h-12 items-center" aria-label="Main Navigation">
+      <nav class="flex gap-6 h-12 items-center" aria-label="Main Navigation" role="tablist">
         <button 
           data-tab-btn="generator" 
-          class="nav-tab-btn h-full border-b-2 border-primary text-ink px-1 text-sm font-medium transition-all cursor-pointer focus:outline-none -mb-[1px]"
+          role="tab"
+          aria-selected="true"
+          class="nav-tab-btn h-full border-b-2 border-primary text-ink px-1 text-sm font-medium transition-[border-color,color] duration-200 ease-in-out cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 rounded-sm -mb-[1px]"
         >
           Generator
         </button>
         <button 
           data-tab-btn="scanner" 
-          class="nav-tab-btn h-full border-b-2 border-transparent text-body hover:text-ink px-1 text-sm font-medium transition-all cursor-pointer focus:outline-none -mb-[1px]"
+          role="tab"
+          aria-selected="false"
+          class="nav-tab-btn h-full border-b-2 border-transparent text-body hover:text-ink px-1 text-sm font-medium transition-[border-color,color] duration-200 ease-in-out cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 rounded-sm -mb-[1px]"
         >
           Scanner
         </button>
         <button 
           data-tab-btn="history" 
-          class="nav-tab-btn h-full border-b-2 border-transparent text-body hover:text-ink px-1 text-sm font-medium transition-all cursor-pointer focus:outline-none -mb-[1px] flex items-center gap-1.5"
+          role="tab"
+          aria-selected="false"
+          class="nav-tab-btn h-full border-b-2 border-transparent text-body hover:text-ink px-1 text-sm font-medium transition-[border-color,color] duration-200 ease-in-out cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 rounded-sm -mb-[1px] flex items-center gap-1.5"
         >
           <span>History</span>
           <span id="history-badge" class="hidden px-2 py-0.5 text-[10px] font-semibold bg-canvas-soft border border-hairline text-ink rounded-full">0</span>
         </button>
         <button 
           data-tab-btn="developer" 
-          class="nav-tab-btn h-full border-b-2 border-transparent text-body hover:text-ink px-1 text-sm font-medium transition-all cursor-pointer focus:outline-none -mb-[1px]"
+          role="tab"
+          aria-selected="false"
+          class="nav-tab-btn h-full border-b-2 border-transparent text-body hover:text-ink px-1 text-sm font-medium transition-[border-color,color] duration-200 ease-in-out cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 rounded-sm -mb-[1px]"
         >
           Developer API
         </button>
@@ -131,9 +139,11 @@
       if (btnTab === hash) {
         btn.classList.add('border-primary', 'text-ink');
         btn.classList.remove('border-transparent', 'text-body');
+        btn.setAttribute('aria-selected', 'true');
       } else {
         btn.classList.remove('border-primary', 'text-ink');
         btn.classList.add('border-transparent', 'text-body');
+        btn.setAttribute('aria-selected', 'false');
       }
     });
 
@@ -161,3 +171,4 @@
   // Initialize on first load
   updateActiveTab();
 </script>
+

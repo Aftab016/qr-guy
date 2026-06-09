@@ -1,0 +1,292 @@
+---
+---
+<div id="tab-history" class="w-full max-w-[1200px] mx-auto py-8 px-6 md:px-8 font-sans hidden">
+  <div class="bg-canvas border border-hairline rounded-lg shadow-level-3 p-6 md:p-8">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+      <div>
+        <h2 class="text-xs font-mono font-medium text-mute uppercase tracking-wider mb-1">Local Session History</h2>
+        <h3 class="font-sans font-semibold text-xl md:text-2xl text-ink tracking-tight">Your previously created QR codes</h3>
+      </div>
+      <button 
+        id="btn-clear-all-history" 
+        class="h-9 px-4 inline-flex items-center justify-center gap-1.5 text-xs font-semibold rounded-pill bg-canvas text-error border border-hairline hover:bg-error-soft active:scale-98 transition-all cursor-pointer focus:outline-none hidden"
+      >
+        Clear All Logs
+      </button>
+    </div>
+
+    <!-- Table Container (Shown if history exists) -->
+    <div id="history-table-container" class="w-full overflow-x-auto border border-hairline rounded-md hidden">
+      <table class="w-full min-w-[700px] border-collapse text-left">
+        <thead>
+          <tr class="bg-canvas-soft border-b border-hairline">
+            <th class="p-4 text-xs font-mono font-medium text-mute uppercase">Date Created</th>
+            <th class="p-4 text-xs font-mono font-medium text-mute uppercase">Source Type</th>
+            <th class="p-4 text-xs font-mono font-medium text-mute uppercase">Data Content</th>
+            <th class="p-4 text-xs font-mono font-medium text-mute uppercase">Dot Style</th>
+            <th class="p-4 text-xs font-mono font-medium text-mute uppercase text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="history-table-body" class="divide-y divide-hairline">
+          <!-- Rows injected dynamically via JS -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Empty State Container -->
+    <div id="history-empty-state" class="text-center py-16 bg-canvas-soft-2 border border-dashed border-hairline rounded-lg flex flex-col items-center justify-center">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 text-mute mb-4">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" />
+      </svg>
+      <h4 class="text-sm font-semibold text-ink mb-1">No QR codes generated yet</h4>
+      <p class="text-xs text-mute max-w-xs mb-6">
+        When you customize and generate QR codes in the customizer tab, they will automatically save here locally.
+      </p>
+      <button 
+        id="btn-history-goto-gen" 
+        class="px-5 h-9 inline-flex items-center justify-center text-xs font-semibold rounded-pill bg-primary text-on-primary hover:opacity-90 transition-all cursor-pointer focus:outline-none"
+      >
+        Go to Generator
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let QRCodeStyling;
+
+  // Cache elements
+  const tabHistory = document.getElementById('tab-history');
+  const tableContainer = document.getElementById('history-table-container');
+  const tableBody = document.getElementById('history-table-body');
+  const emptyState = document.getElementById('history-empty-state');
+  const btnClearAll = document.getElementById('btn-clear-all-history');
+  const btnGoToGen = document.getElementById('btn-history-goto-gen');
+  const navBadge = document.getElementById('history-badge');
+
+  // Load styling dynamically
+  async function loadLibrary() {
+    if (QRCodeStyling) return;
+    try {
+      const module = await import('qr-code-styling');
+      QRCodeStyling = module.default;
+    } catch(e) {}
+  }
+
+  // Listen for tab views
+  window.addEventListener('tab-change', (e) => {
+    const activeTab = e.detail.tab;
+    if (activeTab === 'history') {
+      tabHistory.classList.remove('hidden');
+      loadLibrary().then(renderHistoryTable);
+    } else {
+      tabHistory.classList.add('hidden');
+    }
+  });
+
+  // Re-sync nav badge on history changes
+  window.addEventListener('history-updated', updateNavBadge);
+  window.addEventListener('DOMContentLoaded', updateNavBadge);
+
+  function getHistory() {
+    try {
+      return JSON.parse(localStorage.getItem('qrguy_history') || '[]');
+    } catch(e) {
+      return [];
+    }
+  }
+
+  // Update Nav header badge
+  function updateNavBadge() {
+    const history = getHistory();
+    if (navBadge) {
+      if (history.length > 0) {
+        navBadge.innerText = history.length.toString();
+        navBadge.classList.remove('hidden');
+      } else {
+        navBadge.classList.add('hidden');
+      }
+    }
+  }
+
+  // Render History elements
+  function renderHistoryTable() {
+    const history = getHistory();
+    
+    if (history.length === 0) {
+      tableContainer.classList.add('hidden');
+      btnClearAll.classList.add('hidden');
+      emptyState.classList.remove('hidden');
+      return;
+    }
+
+    emptyState.classList.add('hidden');
+    tableContainer.classList.remove('hidden');
+    btnClearAll.classList.remove('hidden');
+    tableBody.innerHTML = '';
+
+    history.forEach(item => {
+      const row = document.createElement('tr');
+      row.className = "hover:bg-canvas-soft-2/40 transition-colors";
+      
+      // Date Formatting
+      const date = new Date(item.date);
+      const dateStr = date.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) + 
+        ' ' + date.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+
+      // Badge Style based on type
+      let badgeClass = "bg-canvas-soft text-body border-hairline";
+      let displayType = "Text";
+      if (item.type === 'url') {
+        badgeClass = "bg-link-bg-soft text-link border-blue-200 dark:border-blue-900/30";
+        displayType = "Link";
+      } else if (item.type === 'phone') {
+        badgeClass = "bg-cyan-soft dark:bg-cyan-deep/20 text-cyan-deep dark:text-cyan border-cyan-200 dark:border-cyan-900/30";
+        displayType = "Phone / SMS";
+      }
+
+      // Truncate data
+      const displayData = item.data.length > 42 ? item.data.substring(0, 40) + '...' : item.data;
+
+      row.innerHTML = `
+        <td class="p-4 text-xs font-mono text-body">${dateStr}</td>
+        <td class="p-4">
+          <span class="inline-flex items-center px-2 py-0.5 rounded-full border text-[10px] font-mono font-medium ${badgeClass}">
+            ${displayType}
+          </span>
+        </td>
+        <td class="p-4 text-xs text-ink font-mono break-all" title="${item.data}">${escapeHtml(displayData)}</td>
+        <td class="p-4 text-xs text-body font-mono capitalize">${item.dotsType} (${item.color})</td>
+        <td class="p-4 text-xs text-right flex items-center justify-end gap-2.5">
+          <button 
+            data-load-id="${item.id}"
+            class="text-link hover:underline text-xs font-semibold focus:outline-none cursor-pointer"
+          >
+            Load
+          </button>
+          <span class="text-hairline">|</span>
+          <button 
+            data-dl-id="${item.id}"
+            class="text-ink hover:underline text-xs font-semibold focus:outline-none cursor-pointer"
+          >
+            Download PNG
+          </button>
+          <span class="text-hairline">|</span>
+          <button 
+            data-del-id="${item.id}"
+            class="text-error hover:underline text-xs font-semibold focus:outline-none cursor-pointer"
+            title="Delete this record"
+          >
+            Delete
+          </button>
+        </td>
+      `;
+      tableBody.appendChild(row);
+    });
+
+    // Bind dynamic row actions
+    bindRowActions();
+  }
+
+  // Escape HTML helper
+  function escapeHtml(text) {
+    return text
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  // Row action bindings
+  function bindRowActions() {
+    // Delete individual
+    document.querySelectorAll('[data-del-id]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const id = e.currentTarget.getAttribute('data-del-id');
+        let history = getHistory();
+        history = history.filter(item => item.id !== id);
+        localStorage.setItem('qrguy_history', JSON.stringify(history));
+        updateNavBadge();
+        renderHistoryTable();
+      });
+    });
+
+    // Load individual
+    document.querySelectorAll('[data-load-id]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const id = e.currentTarget.getAttribute('data-load-id');
+        const history = getHistory();
+        const found = history.find(item => item.id === id);
+        if (found) {
+          // Set values into config storage
+          let currentConfig = {};
+          try {
+            currentConfig = JSON.parse(localStorage.getItem('qrguy_latest_config') || '{}');
+          } catch(e) {}
+          
+          currentConfig.data = found.data;
+          currentConfig.dotsType = found.dotsType;
+          
+          localStorage.setItem('qrguy_latest_config', JSON.stringify(currentConfig));
+
+          // Switch tab to generator
+          window.location.hash = '#generator';
+          window.location.reload();
+        }
+      });
+    });
+
+    // Quick download individual
+    document.querySelectorAll('[data-dl-id]').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        const id = e.currentTarget.getAttribute('data-dl-id');
+        const history = getHistory();
+        const found = history.find(item => item.id === id);
+        if (found && QRCodeStyling) {
+          try {
+            e.currentTarget.innerText = "Generating...";
+            const opts = {
+              width: 500,
+              height: 500,
+              data: found.data,
+              qrOptions: { errorCorrectionLevel: found.ecl || 'H' },
+              dotsOptions: { type: found.dotsType, color: found.color.includes('→') ? undefined : found.color }
+            };
+            
+            // Handle gradient restore if saved
+            if (found.color.includes('→')) {
+              const parts = found.color.split('→');
+              opts.dotsOptions.gradient = {
+                type: 'linear',
+                rotation: Math.PI / 4,
+                colorStops: [{ offset: 0, color: parts[0] }, { offset: 1, color: parts[1] }]
+              };
+            }
+
+            const dl = new QRCodeStyling(opts);
+            await dl.download({ name: `qrguy-history-${id}`, extension: 'png' });
+          } catch (err) {
+            console.error(err);
+          } finally {
+            e.currentTarget.innerText = "Download PNG";
+          }
+        }
+      });
+    });
+  }
+
+  // Clear all logs
+  btnClearAll.addEventListener('click', () => {
+    if (confirm("Are you sure you want to clear all QR history logs? This cannot be undone.")) {
+      localStorage.removeItem('qrguy_history');
+      updateNavBadge();
+      renderHistoryTable();
+    }
+  });
+
+  // Empty state redirect button
+  btnGoToGen.addEventListener('click', () => {
+    window.location.hash = '#generator';
+  });
+</script>

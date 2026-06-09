@@ -1,11 +1,54 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Header from '../components/Header.astro';
+import WelcomeHero from '../components/WelcomeHero.astro';
+import GeneratorTab from '../components/GeneratorTab.astro';
+import ScannerTab from '../components/ScannerTab.astro';
+import HistoryTab from '../components/HistoryTab.astro';
+import DevTab from '../components/DevTab.astro';
+import Footer from '../components/Footer.astro';
 ---
 
-<Layout>
-	<Welcome />
+<Layout 
+	title="QR Guy — Create Premium Branded QR Codes" 
+	description="Integrate custom shapes, gradients, and logos in your QR codes. 100% free and client-side, with full SVG exports and built-in scanning tools."
+>
+	<!-- Navigation header -->
+	<Header />
+
+	<!-- Marketing Hero Banner (only shows at top) -->
+	<div id="hero-banner-wrapper">
+		<WelcomeHero />
+	</div>
+
+	<!-- Main App Workspaces -->
+	<main class="flex-grow">
+		<GeneratorTab />
+		<ScannerTab />
+		<HistoryTab />
+		<DevTab />
+	</main>
+
+	<!-- Footer -->
+	<Footer />
 </Layout>
+
+<script>
+	// Toggle marketing hero visibility based on active tab hash
+	function handleHeroVisibility() {
+		const hash = window.location.hash.replace('#', '') || 'generator';
+		const heroWrapper = document.getElementById('hero-banner-wrapper');
+		if (heroWrapper) {
+			// Only show WelcomeHero banner on the main Generator workspace view
+			if (hash === 'generator') {
+				heroWrapper.classList.remove('hidden');
+			} else {
+				heroWrapper.classList.add('hidden');
+			}
+		}
+	}
+
+	// Listen to routing tab changes
+	window.addEventListener('hashchange', handleHeroVisibility);
+	window.addEventListener('DOMContentLoaded', handleHeroVisibility);
+</script>

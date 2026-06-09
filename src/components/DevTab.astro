@@ -1,0 +1,200 @@
+---
+---
+<div id="tab-developer" class="w-full max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 py-8 px-6 md:px-8 font-sans hidden">
+  <!-- Left Side: Documentation (7 Columns) -->
+  <div class="lg:col-span-7 flex flex-col gap-6">
+    <div class="bg-canvas border border-hairline rounded-lg shadow-level-3 p-6 md:p-8">
+      <h2 class="text-xs font-mono font-medium text-mute uppercase tracking-wider mb-1">Developer API Specs</h2>
+      <h3 class="font-sans font-semibold text-xl md:text-2xl text-ink tracking-tight mb-4">Integrate QR Guy in your app</h3>
+      <p class="text-xs text-body leading-relaxed mb-6">
+        Generate premium branded QR codes directly from your server or frontend applications using our fast, high-performance static rendering endpoints. Supports SVG vector streams and PNG assets.
+      </p>
+
+      <!-- HTTP Endpoint block -->
+      <div class="flex flex-col gap-2 p-4 bg-canvas-soft-2 border border-hairline rounded-md mb-6">
+        <span class="text-[10px] font-mono text-mute uppercase tracking-wider">Base Endpoint</span>
+        <div class="flex items-center gap-2">
+          <span class="px-2 py-0.5 rounded-sm bg-link-bg-soft dark:bg-link-deep/20 text-link dark:text-cyan text-[11px] font-mono font-bold">GET</span>
+          <code class="text-xs font-mono text-ink font-semibold break-all select-all">https://api.qrguy.com/v1/generate</code>
+        </div>
+      </div>
+
+      <!-- Parameters Table -->
+      <h4 class="text-xs font-mono font-medium text-ink uppercase tracking-wider mb-3">Query Parameters</h4>
+      <div class="border border-hairline rounded-md overflow-hidden bg-canvas">
+        <div class="grid grid-cols-12 bg-canvas-soft border-b border-hairline p-3 text-[10px] font-mono font-medium text-mute uppercase">
+          <div class="col-span-3">Parameter</div>
+          <div class="col-span-2">Type</div>
+          <div class="col-span-2">Required</div>
+          <div class="col-span-5">Description</div>
+        </div>
+        
+        <div class="divide-y divide-hairline text-xs font-mono text-body">
+          <!-- Parameter 1 -->
+          <div class="grid grid-cols-12 p-3 items-center">
+            <div class="col-span-3 text-ink font-semibold">data</div>
+            <div class="col-span-2 text-[10px] text-mute">string</div>
+            <div class="col-span-2 text-error text-[10px] font-bold">YES</div>
+            <div class="col-span-5 font-sans text-xs text-body leading-normal">URL-encoded string data to render inside the QR grid.</div>
+          </div>
+          <!-- Parameter 2 -->
+          <div class="grid grid-cols-12 p-3 items-center">
+            <div class="col-span-3 text-ink font-semibold">style</div>
+            <div class="col-span-2 text-[10px] text-mute">string</div>
+            <div class="col-span-2 text-[10px] text-mute">No</div>
+            <div class="col-span-5 font-sans text-xs text-body leading-normal">Shape of dots: <code>square</code>, <code>dots</code>, <code>rounded</code>, <code>classy</code>.</div>
+          </div>
+          <!-- Parameter 3 -->
+          <div class="grid grid-cols-12 p-3 items-center">
+            <div class="col-span-3 text-ink font-semibold">color</div>
+            <div class="col-span-2 text-[10px] text-mute">hex</div>
+            <div class="col-span-2 text-[10px] text-mute">No</div>
+            <div class="col-span-5 font-sans text-xs text-body leading-normal">Hex code of foreground dots (e.g. <code>171717</code>).</div>
+          </div>
+          <!-- Parameter 4 -->
+          <div class="grid grid-cols-12 p-3 items-center">
+            <div class="col-span-3 text-ink font-semibold">format</div>
+            <div class="col-span-2 text-[10px] text-mute">string</div>
+            <div class="col-span-2 text-[10px] text-mute">No</div>
+            <div class="col-span-5 font-sans text-xs text-body leading-normal">Export extension format: <code>svg</code> (default) or <code>png</code>.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Side: Code Mockup Editor (5 Columns) -->
+  <div class="lg:col-span-5">
+    <div class="sticky top-20 flex flex-col gap-4">
+      <!-- Vercel Code Mockup Card -->
+      <div class="bg-primary text-on-primary rounded-lg shadow-level-5 overflow-hidden font-mono border border-white/10">
+        <!-- Editor Header (OS Control dots) -->
+        <div class="flex items-center justify-between px-4 py-3 bg-canvas-soft-2/5 border-b border-white/5">
+          <div class="flex items-center gap-1.5">
+            <span class="w-3 h-3 rounded-full bg-[#ff5f56]"></span>
+            <span class="w-3 h-3 rounded-full bg-[#ffbd2e]"></span>
+            <span class="w-3 h-3 rounded-full bg-[#27c93f]"></span>
+          </div>
+          <span id="editor-filename" class="text-xs text-mute/80 select-none">fetch-qr.sh</span>
+          <div class="w-12"></div>
+        </div>
+
+        <!-- Language Code Tabs -->
+        <div class="flex bg-canvas-soft-2/5 border-b border-white/5 text-xs select-none">
+          <button id="tab-code-curl" class="code-lang-btn px-4 py-2 border-b border-white text-on-primary bg-white/5 focus:outline-none cursor-pointer">curl</button>
+          <button id="tab-code-js" class="code-lang-btn px-4 py-2 border-b border-transparent text-mute hover:text-on-primary focus:outline-none cursor-pointer">javascript</button>
+          <button id="tab-code-py" class="code-lang-btn px-4 py-2 border-b border-transparent text-mute hover:text-on-primary focus:outline-none cursor-pointer">python</button>
+        </div>
+
+        <!-- Editor Window Content -->
+        <div class="p-6 overflow-x-auto min-h-[220px]">
+          <!-- Curl Code block -->
+          <pre id="code-block-curl" class="code-snippet text-xs leading-relaxed text-[#50e3c2]"><span class="text-mute"># Fetch branded SVG code directly</span>
+curl -X GET \
+  <span class="text-white">"https://api.qrguy.com/v1/generate?\\
+  data=https%3A%2F%2Fqrguy.com&amp;\\
+  style=rounded&amp;\\
+  color=171717"</span> \
+  -o qr-code.svg</pre>
+
+          <!-- Javascript Code block -->
+          <pre id="code-block-js" class="code-snippet text-xs leading-relaxed text-[#ff0080] hidden"><span class="text-mute">// Direct client-side fetch wrapper</span>
+<span class="text-white">const</span> data = encodeURIComponent(<span class="text-white">'https://qrguy.com'</span>);
+<span class="text-white">const</span> url = <span class="text-white">`https://api.qrguy.com/v1/generate?data=\$\&#123;data\&#125;&amp;style=rounded`</span>;
+
+fetch(url)
+  .then(res => res.text())
+  .then(svgXml => &#123;
+    document.getElementById(<span class="text-white">'qr-holder'</span>).innerHTML = svgXml;
+  &#125;);</pre>
+
+          <!-- Python Code block -->
+          <pre id="code-block-py" class="code-snippet text-xs leading-relaxed text-[#0070f3] hidden"><span class="text-mute"># Python request example</span>
+import requests
+
+query = &#123;
+    <span class="text-white">'data'</span>: <span class="text-white">'https://qrguy.com'</span>,
+    <span class="text-white">'style'</span>: <span class="text-white">'rounded'</span>,
+    <span class="text-white">'color'</span>: <span class="text-white">'171717'</span>
+&#125;
+
+response = requests.get(
+    <span class="text-white">'https://api.qrguy.com/v1/generate'</span>,
+    params=query
+)
+
+with open(<span class="text-white">'qr.svg'</span>, <span class="text-white">'wb'</span>) as f:
+    f.write(response.content)</pre>
+        </div>
+      </div>
+
+      <!-- Action Helper Card -->
+      <div class="border border-hairline rounded-lg bg-canvas p-5 text-xs">
+        <h5 class="font-semibold text-ink mb-1.5 flex items-center gap-1.5">
+          <svg class="w-4 h-4 text-link" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 21l8.982-11.795H14.18l.818-5.04L6 16.096h3.813z" />
+          </svg>
+          Quick API Testing
+        </h5>
+        <p class="text-body leading-normal mb-3">
+          Need custom formatting parameters like gradient structures or custom logos embedded in the endpoint? Reach out to support.
+        </p>
+        <a href="mailto:api@qrguy.com" class="text-link hover:underline font-medium">Request API Token →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Tab caching
+  const tabDeveloper = document.getElementById('tab-developer');
+  
+  // Editor selectors
+  const btnCurl = document.getElementById('tab-code-curl');
+  const btnJs = document.getElementById('tab-code-js');
+  const btnPy = document.getElementById('tab-code-py');
+  
+  const blockCurl = document.getElementById('code-block-curl');
+  const blockJs = document.getElementById('code-block-js');
+  const blockPy = document.getElementById('code-block-py');
+  
+  const elFilename = document.getElementById('editor-filename');
+
+  // Listen to tab views
+  window.addEventListener('tab-change', (e) => {
+    const activeTab = e.detail.tab;
+    if (activeTab === 'developer') {
+      tabDeveloper.classList.remove('hidden');
+    } else {
+      tabDeveloper.classList.add('hidden');
+    }
+  });
+
+  // Bind code language buttons
+  btnCurl.addEventListener('click', () => switchLanguage('curl'));
+  btnJs.addEventListener('click', () => switchLanguage('js'));
+  btnPy.addEventListener('click', () => switchLanguage('py'));
+
+  function switchLanguage(lang) {
+    // Reset tabs
+    [btnCurl, btnJs, btnPy].forEach(btn => {
+      btn.className = "code-lang-btn px-4 py-2 border-b border-transparent text-mute hover:text-on-primary focus:outline-none cursor-pointer";
+    });
+    // Hide code blocks
+    [blockCurl, blockJs, blockPy].forEach(block => block.classList.add('hidden'));
+
+    if (lang === 'curl') {
+      btnCurl.className = "code-lang-btn px-4 py-2 border-b border-white text-on-primary bg-white/5 focus:outline-none cursor-pointer";
+      blockCurl.classList.remove('hidden');
+      elFilename.innerText = 'fetch-qr.sh';
+    } else if (lang === 'js') {
+      btnJs.className = "code-lang-btn px-4 py-2 border-b border-white text-on-primary bg-white/5 focus:outline-none cursor-pointer";
+      blockJs.classList.remove('hidden');
+      elFilename.innerText = 'generate.js';
+    } else if (lang === 'py') {
+      btnPy.className = "code-lang-btn px-4 py-2 border-b border-white text-on-primary bg-white/5 focus:outline-none cursor-pointer";
+      blockPy.classList.remove('hidden');
+      elFilename.innerText = 'fetch_qr.py';
+    }
+  }
+</script>

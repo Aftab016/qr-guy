@@ -1,0 +1,1602 @@
+---
+---
+<div id="tab-generator" class="w-full max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 py-8 px-6 md:px-8 font-sans">
+  <!-- Left Side: Customization & Inputs (7 Columns) -->
+  <div class="lg:col-span-7 flex flex-col gap-6">
+    <!-- Section 1: Method Picker -->
+    <div class="bg-canvas border border-hairline rounded-lg shadow-level-2 p-6">
+      <h2 class="text-xs font-mono font-medium text-mute uppercase tracking-wider mb-4">Method 1, 2, or 3 — Select Source</h2>
+      
+      <!-- Source Tabs -->
+      <div class="flex border-b border-hairline mb-6 gap-2" role="tablist">
+        <button 
+          id="btn-method-url"
+          class="method-tab-btn border-b-2 border-primary text-ink px-4 py-2 text-sm font-medium focus:outline-none cursor-pointer"
+          role="tab"
+          aria-selected="true"
+        >
+          Link to QR
+        </button>
+        <button 
+          id="btn-method-phone"
+          class="method-tab-btn border-b-2 border-transparent text-body hover:text-ink px-4 py-2 text-sm font-medium focus:outline-none cursor-pointer"
+          role="tab"
+          aria-selected="false"
+        >
+          Number to QR
+        </button>
+        <button 
+          id="btn-method-code"
+          class="method-tab-btn border-b-2 border-transparent text-body hover:text-ink px-4 py-2 text-sm font-medium focus:outline-none cursor-pointer"
+          role="tab"
+          aria-selected="false"
+        >
+          Code / Text to QR
+        </button>
+      </div>
+
+      <!-- Content 1: Link -->
+      <div id="method-url-pane" class="method-pane block">
+        <div class="flex flex-col gap-2">
+          <label for="input-url" class="text-xs font-semibold text-ink">Target Link (URL)</label>
+          <input 
+            type="url" 
+            id="input-url" 
+            placeholder="https://example.com" 
+            value="https://qrguy.com"
+            class="w-full px-4 h-10 border border-hairline rounded-sm bg-canvas text-ink text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+          />
+          <p class="text-[11px] text-mute font-mono">Real-time URL validation enabled. Automatically adds https:// if missing.</p>
+        </div>
+      </div>
+
+      <!-- Content 2: Phone Number -->
+      <div id="method-phone-pane" class="method-pane hidden">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="flex flex-col gap-2">
+            <label for="input-phone" class="text-xs font-semibold text-ink">Phone Number</label>
+            <input 
+              type="tel" 
+              id="input-phone" 
+              placeholder="+1 (555) 000-0000" 
+              class="w-full px-4 h-10 border border-hairline rounded-sm bg-canvas text-ink text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+            />
+          </div>
+          <div class="flex flex-col gap-2">
+            <label for="input-phone-action" class="text-xs font-semibold text-ink">Action Type</label>
+            <select 
+              id="input-phone-action"
+              class="w-full px-3 h-10 border border-hairline rounded-sm bg-canvas text-ink text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+            >
+              <option value="tel">Direct Call (tel:)</option>
+              <option value="sms">SMS Text (SMSTO:)</option>
+            </select>
+          </div>
+          <div id="sms-body-container" class="col-span-1 md:col-span-2 flex flex-col gap-2 hidden">
+            <label for="input-sms-body" class="text-xs font-semibold text-ink">SMS Prefilled Message (Optional)</label>
+            <textarea 
+              id="input-sms-body" 
+              rows="2"
+              placeholder="Enter text message to prefill..." 
+              class="w-full p-3 border border-hairline rounded-sm bg-canvas text-ink text-sm focus:outline-none focus:ring-1 focus:ring-primary resize-none"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content 3: Code / Custom Text -->
+      <div id="method-code-pane" class="method-pane hidden">
+        <div class="flex flex-col gap-4">
+          <!-- Templates selector inside Code Tab -->
+          <div class="flex flex-wrap gap-2 items-center">
+            <span class="text-xs font-medium text-mute mr-1">Templates:</span>
+            <button id="tpl-raw" class="px-2.5 py-1 text-xs rounded-sm border border-primary bg-primary text-on-primary font-medium focus:outline-none cursor-pointer">Raw Text</button>
+            <button id="tpl-wifi" class="px-2.5 py-1 text-xs rounded-sm border border-hairline hover:bg-canvas-soft-2 text-body hover:text-ink font-medium focus:outline-none cursor-pointer">Wi-Fi Network</button>
+            <button id="tpl-vcard" class="px-2.5 py-1 text-xs rounded-sm border border-hairline hover:bg-canvas-soft-2 text-body hover:text-ink font-medium focus:outline-none cursor-pointer">VCard / Contact</button>
+          </div>
+
+          <!-- Wi-Fi Helper Panel -->
+          <div id="helper-wifi-panel" class="hidden grid grid-cols-1 md:grid-cols-3 gap-3 p-4 bg-canvas-soft-2 border border-hairline rounded-md">
+            <div class="flex flex-col gap-1.5">
+              <label for="wifi-ssid" class="text-xs font-medium text-body">SSID (Network Name)</label>
+              <input type="text" id="wifi-ssid" placeholder="HomeNet" class="px-3 h-8 border border-hairline rounded-sm bg-canvas text-ink text-xs focus:outline-none"/>
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label for="wifi-pass" class="text-xs font-medium text-body">Password</label>
+              <input type="password" id="wifi-pass" placeholder="••••••••" class="px-3 h-8 border border-hairline rounded-sm bg-canvas text-ink text-xs focus:outline-none"/>
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label for="wifi-type" class="text-xs font-medium text-body">Security</label>
+              <select id="wifi-type" class="px-2 h-8 border border-hairline rounded-sm bg-canvas text-ink text-xs focus:outline-none">
+                <option value="WPA">WPA/WPA2</option>
+                <option value="WEP">WEP</option>
+                <option value="nopass">Unsecured</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- VCard Helper Panel -->
+          <div id="helper-vcard-panel" class="hidden grid grid-cols-1 md:grid-cols-2 gap-3 p-4 bg-canvas-soft-2 border border-hairline rounded-md">
+            <div class="flex flex-col gap-1.5">
+              <label for="vcard-name" class="text-xs font-medium text-body">Full Name</label>
+              <input type="text" id="vcard-name" placeholder="John Doe" class="px-3 h-8 border border-hairline rounded-sm bg-canvas text-ink text-xs focus:outline-none"/>
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label for="vcard-phone" class="text-xs font-medium text-body">Phone</label>
+              <input type="text" id="vcard-phone" placeholder="+1 555 1234" class="px-3 h-8 border border-hairline rounded-sm bg-canvas text-ink text-xs focus:outline-none"/>
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label for="vcard-email" class="text-xs font-medium text-body">Email</label>
+              <input type="email" id="vcard-email" placeholder="john@example.com" class="px-3 h-8 border border-hairline rounded-sm bg-canvas text-ink text-xs focus:outline-none"/>
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label for="vcard-org" class="text-xs font-medium text-body">Company / Org</label>
+              <input type="text" id="vcard-org" placeholder="Acme Inc." class="px-3 h-8 border border-hairline rounded-sm bg-canvas text-ink text-xs focus:outline-none"/>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <label for="input-code" class="text-xs font-semibold text-ink">Code / Text Content</label>
+            <textarea 
+              id="input-code" 
+              rows="4" 
+              placeholder="Enter text, code, JSON, or select a template..."
+              class="w-full p-3 border border-hairline rounded-sm bg-canvas text-ink text-sm font-mono focus:outline-none focus:ring-1 focus:ring-primary"
+            ></textarea>
+            <p class="text-[11px] text-mute font-mono">Format outputs dynamically. Changes to fields above compile here automatically.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: Customization Options Accordion -->
+    <div class="flex flex-col border border-hairline rounded-lg bg-canvas shadow-level-2 divide-y divide-hairline">
+      
+      <!-- Accordion Header: Presets -->
+      <details class="group/acc" open>
+        <summary class="flex items-center justify-between p-5 font-semibold text-sm text-ink cursor-pointer list-none select-none focus:outline-none">
+          <span>1. Design Presets (Instant Styles)</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-mute group-open/acc:rotate-180 transition-transform">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+          </svg>
+        </summary>
+        <div class="p-5 pt-0 border-t border-hairline/30">
+          <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">
+            <button 
+              data-preset="stark" 
+              class="preset-btn p-3 rounded-md border border-primary text-ink text-center flex flex-col items-center gap-1.5 hover:bg-canvas-soft-2 transition-all cursor-pointer focus:outline-none"
+            >
+              <div class="w-6 h-6 rounded-full bg-primary flex items-center justify-center text-on-primary font-mono text-[10px]">▲</div>
+              <span class="text-[11px] font-medium font-sans">Vercel Stark</span>
+            </button>
+            <button 
+              data-preset="cyber" 
+              class="preset-btn p-3 rounded-md border border-hairline text-body hover:text-ink text-center flex flex-col items-center gap-1.5 hover:bg-canvas-soft-2 transition-all cursor-pointer focus:outline-none"
+            >
+              <div class="w-6 h-6 rounded-full bg-gradient-to-r from-violet to-highlight-pink flex items-center justify-center font-mono text-[10px]"></div>
+              <span class="text-[11px] font-medium font-sans">Midnight Cyber</span>
+            </button>
+            <button 
+              data-preset="mint" 
+              class="preset-btn p-3 rounded-md border border-hairline text-body hover:text-ink text-center flex flex-col items-center gap-1.5 hover:bg-canvas-soft-2 transition-all cursor-pointer focus:outline-none"
+            >
+              <div class="w-6 h-6 rounded-full bg-gradient-to-r from-link to-cyan flex items-center justify-center font-mono text-[10px]"></div>
+              <span class="text-[11px] font-medium font-sans">Neo Mint</span>
+            </button>
+            <button 
+              data-preset="sunset" 
+              class="preset-btn p-3 rounded-md border border-hairline text-body hover:text-ink text-center flex flex-col items-center gap-1.5 hover:bg-canvas-soft-2 transition-all cursor-pointer focus:outline-none"
+            >
+              <div class="w-6 h-6 rounded-full bg-gradient-to-r from-gradient-ship-start to-gradient-ship-end flex items-center justify-center font-mono text-[10px]"></div>
+              <span class="text-[11px] font-medium font-sans">Sunset Rose</span>
+            </button>
+            <button 
+              data-preset="classic" 
+              class="preset-btn p-3 rounded-md border border-hairline text-body hover:text-ink text-center flex flex-col items-center gap-1.5 hover:bg-canvas-soft-2 transition-all cursor-pointer focus:outline-none"
+            >
+              <div class="w-6 h-6 rounded-sm bg-black border border-white flex items-center justify-center text-white font-mono text-[8px]">QR</div>
+              <span class="text-[11px] font-medium font-sans">Classic Mono</span>
+            </button>
+          </div>
+        </div>
+      </details>
+
+      <!-- Accordion Header: Colors -->
+      <details class="group/acc">
+        <summary class="flex items-center justify-between p-5 font-semibold text-sm text-ink cursor-pointer list-none select-none focus:outline-none">
+          <span>2. Color Palette & Gradients</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-mute group-open/acc:rotate-180 transition-transform">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+          </svg>
+        </summary>
+        <div class="p-5 pt-0 border-t border-hairline/30 flex flex-col gap-5">
+          <!-- Foreground Type -->
+          <div class="grid grid-cols-2 gap-4">
+            <div class="flex flex-col gap-2">
+              <label class="text-xs font-semibold text-ink">Foreground Style</label>
+              <div class="flex p-0.5 bg-canvas-soft-2 border border-hairline rounded-sm">
+                <button id="btn-fg-solid" class="flex-1 text-center py-1 text-xs font-medium bg-canvas border border-hairline text-ink rounded-sm focus:outline-none cursor-pointer">Solid Color</button>
+                <button id="btn-fg-gradient" class="flex-1 text-center py-1 text-xs font-medium text-body hover:text-ink rounded-sm focus:outline-none cursor-pointer">Gradient</button>
+              </div>
+            </div>
+            
+            <!-- Solid Color Picker -->
+            <div id="fg-solid-container" class="flex flex-col gap-2">
+              <label for="color-fg" class="text-xs font-semibold text-ink">Solid Color</label>
+              <div class="flex items-center gap-2">
+                <input type="color" id="color-fg" value="#171717" class="w-10 h-8 border border-hairline rounded-sm cursor-pointer p-0 bg-transparent"/>
+                <input type="text" id="color-fg-text" value="#171717" class="flex-1 px-3 h-8 border border-hairline rounded-sm bg-canvas text-ink text-xs focus:outline-none uppercase font-mono"/>
+              </div>
+            </div>
+          </div>
+
+          <!-- Gradient Configurations -->
+          <div id="fg-gradient-container" class="hidden grid grid-cols-1 md:grid-cols-4 gap-4 p-4 bg-canvas-soft-2 border border-hairline rounded-md">
+            <div class="flex flex-col gap-1.5">
+              <label for="color-grad-start" class="text-[11px] font-semibold text-body">Start Color</label>
+              <div class="flex items-center gap-1">
+                <input type="color" id="color-grad-start" value="#007cf0" class="w-8 h-8 border border-hairline rounded-sm cursor-pointer p-0 bg-transparent"/>
+                <input type="text" id="color-grad-start-text" value="#007cf0" class="w-16 px-1 h-8 border border-hairline rounded-sm bg-canvas text-ink text-[10px] focus:outline-none uppercase font-mono"/>
+              </div>
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label for="color-grad-end" class="text-[11px] font-semibold text-body">End Color</label>
+              <div class="flex items-center gap-1">
+                <input type="color" id="color-grad-end" value="#00dfd8" class="w-8 h-8 border border-hairline rounded-sm cursor-pointer p-0 bg-transparent"/>
+                <input type="text" id="color-grad-end-text" value="#00dfd8" class="w-16 px-1 h-8 border border-hairline rounded-sm bg-canvas text-ink text-[10px] focus:outline-none uppercase font-mono"/>
+              </div>
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label for="grad-type" class="text-[11px] font-semibold text-body">Type</label>
+              <select id="grad-type" class="w-full h-8 border border-hairline rounded-sm bg-canvas text-ink text-xs focus:outline-none px-1">
+                <option value="linear">Linear</option>
+                <option value="radial">Radial</option>
+              </select>
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label for="grad-angle" class="text-[11px] font-semibold text-body">Angle (deg)</label>
+              <input type="number" id="grad-angle" value="45" min="0" max="360" class="w-full h-8 border border-hairline rounded-sm bg-canvas text-ink text-xs focus:outline-none px-2 font-mono"/>
+            </div>
+          </div>
+
+          <!-- Background Settings -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="flex flex-col gap-2">
+              <label for="color-bg" class="text-xs font-semibold text-ink">Background Color</label>
+              <div class="flex items-center gap-2">
+                <input type="color" id="color-bg" value="#ffffff" class="w-10 h-8 border border-hairline rounded-sm cursor-pointer p-0 bg-transparent"/>
+                <input type="text" id="color-bg-text" value="#ffffff" class="flex-1 px-3 h-8 border border-hairline rounded-sm bg-canvas text-ink text-xs focus:outline-none uppercase font-mono"/>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 pt-6">
+              <input type="checkbox" id="bg-transparent" class="w-4 h-4 border border-hairline rounded-sm bg-canvas text-ink accent-primary cursor-pointer"/>
+              <label for="bg-transparent" class="text-xs font-semibold text-ink cursor-pointer">Transparent Background</label>
+            </div>
+          </div>
+
+          <!-- Custom Eye Colors -->
+          <div class="border-t border-hairline pt-4">
+            <div class="flex items-center gap-2 mb-3">
+              <input type="checkbox" id="eye-color-override" class="w-4 h-4 border border-hairline rounded-sm bg-canvas text-ink accent-primary cursor-pointer"/>
+              <label for="eye-color-override" class="text-xs font-semibold text-ink cursor-pointer">Customize Corners (Eyes) Colors</label>
+            </div>
+            <div id="eye-colors-container" class="hidden grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-canvas-soft-2 border border-hairline rounded-md">
+              <div class="flex flex-col gap-2">
+                <label for="color-eye-frame" class="text-xs font-semibold text-ink">Eye Frame (Outer Square)</label>
+                <div class="flex items-center gap-2">
+                  <input type="color" id="color-eye-frame" value="#171717" class="w-8 h-8 border border-hairline rounded-sm cursor-pointer p-0 bg-transparent"/>
+                  <input type="text" id="color-eye-frame-text" value="#171717" class="flex-1 px-3 h-8 border border-hairline rounded-sm bg-canvas text-ink text-xs focus:outline-none uppercase font-mono"/>
+                </div>
+              </div>
+              <div class="flex flex-col gap-2">
+                <label for="color-eye-ball" class="text-xs font-semibold text-ink">Eye Ball (Inner Dot)</label>
+                <div class="flex items-center gap-2">
+                  <input type="color" id="color-eye-ball" value="#171717" class="w-8 h-8 border border-hairline rounded-sm cursor-pointer p-0 bg-transparent"/>
+                  <input type="text" id="color-eye-ball-text" value="#171717" class="flex-1 px-3 h-8 border border-hairline rounded-sm bg-canvas text-ink text-xs focus:outline-none uppercase font-mono"/>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <!-- Accordion Header: Shapes -->
+      <details class="group/acc">
+        <summary class="flex items-center justify-between p-5 font-semibold text-sm text-ink cursor-pointer list-none select-none focus:outline-none">
+          <span>3. Shapes & Custom Geometry</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-mute group-open/acc:rotate-180 transition-transform">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+          </svg>
+        </summary>
+        <div class="p-5 pt-0 border-t border-hairline/30 grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <!-- Dots shape -->
+          <div class="flex flex-col gap-2">
+            <label for="shape-dots" class="text-xs font-semibold text-ink">QR Body Dots</label>
+            <select id="shape-dots" class="w-full h-10 border border-hairline rounded-sm bg-canvas text-ink text-sm focus:outline-none px-2">
+              <option value="square">Square (Default)</option>
+              <option value="dots">Circular Dots</option>
+              <option value="rounded">Rounded Blocks</option>
+              <option value="extra-rounded">Extra Rounded</option>
+              <option value="classy">Classy Style</option>
+              <option value="classy-rounded">Classy Rounded</option>
+            </select>
+          </div>
+
+          <!-- Eye Frame shape -->
+          <div class="flex flex-col gap-2">
+            <label for="shape-eye-frame" class="text-xs font-semibold text-ink">Corner Frame (Outer)</label>
+            <select id="shape-eye-frame" class="w-full h-10 border border-hairline rounded-sm bg-canvas text-ink text-sm focus:outline-none px-2">
+              <option value="square">Square (Default)</option>
+              <option value="dot">Circle / Dot</option>
+              <option value="rounded">Rounded</option>
+              <option value="extra-rounded">Extra Rounded</option>
+            </select>
+          </div>
+
+          <!-- Eye Ball shape -->
+          <div class="flex flex-col gap-2">
+            <label for="shape-eye-ball" class="text-xs font-semibold text-ink">Corner Ball (Inner)</label>
+            <select id="shape-eye-ball" class="w-full h-10 border border-hairline rounded-sm bg-canvas text-ink text-sm focus:outline-none px-2">
+              <option value="square">Square (Default)</option>
+              <option value="dot">Circle / Dot</option>
+              <option value="rounded">Rounded</option>
+              <option value="extra-rounded">Extra Rounded</option>
+            </select>
+          </div>
+        </div>
+      </details>
+
+      <!-- Accordion Header: Logo -->
+      <details class="group/acc">
+        <summary class="flex items-center justify-between p-5 font-semibold text-sm text-ink cursor-pointer list-none select-none focus:outline-none">
+          <span>4. Logo Overlay (Branding)</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-mute group-open/acc:rotate-180 transition-transform">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+          </svg>
+        </summary>
+        <div class="p-5 pt-0 border-t border-hairline/30 flex flex-col gap-4">
+          <!-- Preset Icons vs Upload -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- File upload -->
+            <div class="flex flex-col gap-2">
+              <label class="text-xs font-semibold text-ink">Upload Custom Logo</label>
+              <input 
+                type="file" 
+                id="logo-upload" 
+                accept="image/*"
+                class="block w-full text-xs text-mute file:mr-4 file:py-1.5 file:px-4 file:rounded-sm file:border file:border-hairline file:text-xs file:font-semibold file:bg-canvas file:text-ink file:cursor-pointer hover:file:bg-canvas-soft-2"
+              />
+            </div>
+            
+            <!-- Preset Icons -->
+            <div class="flex flex-col gap-2">
+              <label for="logo-preset" class="text-xs font-semibold text-ink">Or Choose Preset Icon</label>
+              <select id="logo-preset" class="w-full h-10 border border-hairline rounded-sm bg-canvas text-ink text-sm focus:outline-none px-2">
+                <option value="none">No Icon (None)</option>
+                <option value="link">Link Icon</option>
+                <option value="phone">Phone Icon</option>
+                <option value="github">GitHub Octocat</option>
+                <option value="star">Star Badge</option>
+                <option value="qrcode">QR Icon</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Logo Styling sliders (Shown only if logo selected) -->
+          <div id="logo-settings-panel" class="hidden grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-canvas-soft-2 border border-hairline rounded-md">
+            <div class="flex flex-col gap-1.5">
+              <label for="logo-size" class="text-xs font-semibold text-ink">Logo Size (Ratio)</label>
+              <div class="flex items-center gap-2">
+                <input type="range" id="logo-size" min="0.05" max="0.4" step="0.05" value="0.15" class="flex-1 accent-primary"/>
+                <span id="lbl-logo-size" class="text-xs font-mono w-8 text-right">15%</span>
+              </div>
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label for="logo-margin" class="text-xs font-semibold text-ink">Logo Margin (px)</label>
+              <div class="flex items-center gap-2">
+                <input type="range" id="logo-margin" min="0" max="20" step="1" value="4" class="flex-1 accent-primary"/>
+                <span id="lbl-logo-margin" class="text-xs font-mono w-8 text-right">4px</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 pt-4">
+              <input type="checkbox" id="logo-bg-clean" checked class="w-4 h-4 border border-hairline rounded-sm bg-canvas text-ink accent-primary cursor-pointer"/>
+              <label for="logo-bg-clean" class="text-xs font-semibold text-ink cursor-pointer">Clear background behind logo</label>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <!-- Accordion Header: Advanced -->
+      <details class="group/acc">
+        <summary class="flex items-center justify-between p-5 font-semibold text-sm text-ink cursor-pointer list-none select-none focus:outline-none">
+          <span>5. Advanced QR Core Parameters</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-mute group-open/acc:rotate-180 transition-transform">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+          </svg>
+        </summary>
+        <div class="p-5 pt-0 border-t border-hairline/30 flex flex-col gap-4">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- ECL -->
+            <div class="flex flex-col gap-2">
+              <label for="qr-ecl" class="text-xs font-semibold text-ink">Error Correction Level (ECL)</label>
+              <select id="qr-ecl" class="w-full h-10 border border-hairline rounded-sm bg-canvas text-ink text-sm focus:outline-none px-2">
+                <option value="L">L — Low (7% recovery)</option>
+                <option value="M">M — Medium (15% recovery)</option>
+                <option value="Q">Q — Quartile (25% recovery)</option>
+                <option value="H" selected>H — High (30% recovery - Recommended)</option>
+              </select>
+              <p class="text-[10px] text-mute leading-normal">High ECL protects code against logo covers or dirt.</p>
+            </div>
+
+            <!-- Size Slider -->
+            <div class="flex flex-col gap-2">
+              <label for="qr-resolution" class="text-xs font-semibold text-ink">Resolution Size (px)</label>
+              <div class="flex items-center gap-3 mt-1.5">
+                <input type="range" id="qr-resolution" min="200" max="1000" step="50" value="500" class="flex-1 accent-primary"/>
+                <span id="lbl-qr-resolution" class="text-xs font-mono w-12 text-right">500px</span>
+              </div>
+              <p class="text-[10px] text-mute">Adjusts generated file height and width.</p>
+            </div>
+
+            <!-- Margin Slider -->
+            <div class="flex flex-col gap-2">
+              <label for="qr-margin" class="text-xs font-semibold text-ink">Quiet Zone Margin (px)</label>
+              <div class="flex items-center gap-3 mt-1.5">
+                <input type="range" id="qr-margin" min="0" max="60" step="5" value="15" class="flex-1 accent-primary"/>
+                <span id="lbl-qr-margin" class="text-xs font-mono w-10 text-right">15px</span>
+              </div>
+              <p class="text-[10px] text-mute">Space around the QR grid perimeter.</p>
+            </div>
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+  <!-- Right Side: Sticky Live Preview Card (5 Columns) -->
+  <div class="lg:col-span-5">
+    <div class="sticky top-20 flex flex-col gap-4">
+      <!-- Preview Frame Card -->
+      <div class="bg-canvas border border-hairline rounded-lg shadow-level-4 p-6 flex flex-col items-center">
+        <h3 class="text-xs font-mono font-medium text-mute uppercase tracking-wider mb-6 align-self-start">Live Generator Canvas</h3>
+        
+        <!-- Canvas Wrapper -->
+        <div class="relative w-full max-w-[280px] aspect-square flex items-center justify-center border border-hairline rounded-md bg-canvas-soft-2 overflow-hidden p-3 shadow-inner">
+          <!-- Render Container for qr-code-styling -->
+          <div id="qr-preview-wrapper" class="w-full h-full flex items-center justify-center"></div>
+          
+          <!-- Loading Overlay -->
+          <div id="qr-loading" class="absolute inset-0 bg-canvas/80 backdrop-blur-xs flex items-center justify-center hidden">
+            <svg class="animate-spin h-6 w-6 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Render Info Row -->
+        <div class="flex items-center gap-1.5 mt-4 text-[10px] font-mono text-mute">
+          <span id="render-info-res">500 × 500 px</span>
+          <span>•</span>
+          <span id="render-info-ecl">ECL: High</span>
+          <span>•</span>
+          <span class="text-success font-medium">100% Client-Safe</span>
+        </div>
+
+        <!-- Divider -->
+        <div class="w-full h-px bg-hairline my-6"></div>
+
+        <!-- Download Buttons -->
+        <div class="w-full flex flex-col gap-3">
+          <button 
+            id="btn-download-png"
+            class="w-full h-12 inline-flex items-center justify-center gap-2 text-sm font-semibold rounded-pill bg-primary text-on-primary hover:opacity-90 active:scale-98 transition-all shadow-level-3 cursor-pointer focus:outline-none"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+            </svg>
+            Download PNG Image
+          </button>
+          
+          <div class="grid grid-cols-2 gap-3">
+            <button 
+              id="btn-download-svg"
+              class="h-10 inline-flex items-center justify-center gap-1.5 text-xs font-semibold rounded-pill bg-canvas text-ink border border-hairline hover:bg-canvas-soft-2 active:scale-98 transition-all cursor-pointer focus:outline-none"
+            >
+              Export vector SVG
+            </button>
+            <button 
+              id="btn-download-jpeg"
+              class="h-10 inline-flex items-center justify-center gap-1.5 text-xs font-semibold rounded-pill bg-canvas text-ink border border-hairline hover:bg-canvas-soft-2 active:scale-98 transition-all cursor-pointer focus:outline-none"
+            >
+              Export JPEG
+            </button>
+          </div>
+        </div>
+
+        <!-- Clipboard and Bookmark Copy Actions -->
+        <div class="w-full grid grid-cols-2 gap-3 mt-4">
+          <button 
+            id="btn-copy-svg"
+            class="py-2 inline-flex items-center justify-center gap-1 text-[11px] font-medium text-body hover:text-ink border border-dashed border-hairline hover:border-hairline-strong rounded-sm bg-canvas-soft transition-all cursor-pointer focus:outline-none"
+            title="Copies raw vector code to clipboard"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3.5 h-3.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H5.25m11.9-3.664A2.251 2.251 0 0 0 15 2.25h-1.5a2.25 2.25 0 0 0-2.25 2.25v1.5a2.25 2.25 0 0 0 2.25 2.25H15a2.25 2.25 0 0 0 2.25-2.25V3.586ZM18 12v9m-3-3h6m-3-3h.008v.008H21V12Z" />
+            </svg>
+            Copy SVG XML
+          </button>
+          <button 
+            id="btn-copy-png"
+            class="py-2 inline-flex items-center justify-center gap-1 text-[11px] font-medium text-body hover:text-ink border border-dashed border-hairline hover:border-hairline-strong rounded-sm bg-canvas-soft transition-all cursor-pointer focus:outline-none"
+            title="Copies raster image to clipboard"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3.5 h-3.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.258c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184" />
+            </svg>
+            Copy Image (PNG)
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Toast Alert (Hidden by default) -->
+      <div id="toast-message" class="hidden flex items-center justify-between p-3.5 rounded-md border border-hairline bg-canvas shadow-level-3 text-xs text-ink transition-opacity opacity-0 duration-300">
+        <span id="toast-text">SVG Copied successfully!</span>
+        <button id="btn-toast-close" class="text-mute hover:text-ink font-mono text-xs focus:outline-none">✕</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { PRESET_SVGS } from '../utils/presets';
+  
+  // Use dynamic imports to prevent SSR bundling failures in Astro
+  let QRCodeStyling;
+
+  // Cache elements
+  const elWrapper = document.getElementById('qr-preview-wrapper');
+  const elLoading = document.getElementById('qr-loading');
+  const elToast = document.getElementById('toast-message');
+  const elToastText = document.getElementById('toast-text');
+
+  // Input elements
+  const elUrl = document.getElementById('input-url');
+  const elPhone = document.getElementById('input-phone');
+  const elPhoneAction = document.getElementById('input-phone-action');
+  const elSmsBodyContainer = document.getElementById('sms-body-container');
+  const elSmsBody = document.getElementById('input-sms-body');
+  const elCode = document.getElementById('input-code');
+
+  // Accordion parameters
+  const elFgSolid = document.getElementById('btn-fg-solid');
+  const elFgGradient = document.getElementById('btn-fg-gradient');
+  const elFgSolidContainer = document.getElementById('fg-solid-container');
+  const elFgGradientContainer = document.getElementById('fg-gradient-container');
+
+  const elColorFg = document.getElementById('color-fg');
+  const elColorFgText = document.getElementById('color-fg-text');
+  const elColorBg = document.getElementById('color-bg');
+  const elColorBgText = document.getElementById('color-bg-text');
+  const elBgTransparent = document.getElementById('bg-transparent');
+
+  const elGradStart = document.getElementById('color-grad-start');
+  const elGradStartText = document.getElementById('color-grad-start-text');
+  const elGradEnd = document.getElementById('color-grad-end');
+  const elGradEndText = document.getElementById('color-grad-end-text');
+  const elGradType = document.getElementById('grad-type');
+  const elGradAngle = document.getElementById('grad-angle');
+
+  const elEyeColorOverride = document.getElementById('eye-color-override');
+  const elEyeColorsContainer = document.getElementById('eye-colors-container');
+  const elColorEyeFrame = document.getElementById('color-eye-frame');
+  const elColorEyeFrameText = document.getElementById('color-eye-frame-text');
+  const elColorEyeBall = document.getElementById('color-eye-ball');
+  const elColorEyeBallText = document.getElementById('color-eye-ball-text');
+
+  // Shapes
+  const elShapeDots = document.getElementById('shape-dots');
+  const elShapeEyeFrame = document.getElementById('shape-eye-frame');
+  const elShapeEyeBall = document.getElementById('shape-eye-ball');
+
+  // Logo Settings
+  const elLogoUpload = document.getElementById('logo-upload');
+  const elLogoPreset = document.getElementById('logo-preset');
+  const elLogoSettings = document.getElementById('logo-settings-panel');
+  const elLogoSize = document.getElementById('logo-size');
+  const elLogoMargin = document.getElementById('logo-margin');
+  const elLogoBgClean = document.getElementById('logo-bg-clean');
+  
+  const elLblLogoSize = document.getElementById('lbl-logo-size');
+  const elLblLogoMargin = document.getElementById('lbl-logo-margin');
+
+  // Advanced settings
+  const elQrEcl = document.getElementById('qr-ecl');
+  const elQrResolution = document.getElementById('qr-resolution');
+  const elQrMargin = document.getElementById('qr-margin');
+  
+  const elLblQrResolution = document.getElementById('lbl-qr-resolution');
+  const elLblQrMargin = document.getElementById('lbl-qr-margin');
+
+  // Preview Info
+  const elInfoRes = document.getElementById('render-info-res');
+  const elInfoEcl = document.getElementById('render-info-ecl');
+
+  // Download / copy buttons
+  const elDlPng = document.getElementById('btn-download-png');
+  const elDlSvg = document.getElementById('btn-download-svg');
+  const elDlJpeg = document.getElementById('btn-download-jpeg');
+  const elCopySvg = document.getElementById('btn-copy-svg');
+  const elCopyPng = document.getElementById('btn-copy-png');
+
+  // Method buttons & panes
+  const methodTabs = document.querySelectorAll('.method-tab-btn');
+  const methodPanes = document.querySelectorAll('.method-pane');
+  let currentMethod = 'url'; // 'url', 'phone', 'code'
+
+  // Code templates
+  const btnTplRaw = document.getElementById('tpl-raw');
+  const btnTplWifi = document.getElementById('tpl-wifi');
+  const btnTplVcard = document.getElementById('tpl-vcard');
+  const helperWifi = document.getElementById('helper-wifi-panel');
+  const helperVcard = document.getElementById('helper-vcard-panel');
+
+  // Wi-Fi inputs
+  const elWifiSsid = document.getElementById('wifi-ssid');
+  const elWifiPass = document.getElementById('wifi-pass');
+  const elWifiType = document.getElementById('wifi-type');
+
+  // VCard inputs
+  const elVcardName = document.getElementById('vcard-name');
+  const elVcardPhone = document.getElementById('vcard-phone');
+  const elVcardEmail = document.getElementById('vcard-email');
+  const elVcardOrg = document.getElementById('vcard-org');
+
+  // App State Variables
+  let isGradient = false;
+  let customLogoDataUrl = '';
+  let qrEngineInstance = null;
+  let generateTimeout = null;
+
+  // Initialize client dependencies
+  async function initApp() {
+    try {
+      const module = await import('qr-code-styling');
+      QRCodeStyling = module.default;
+      
+      // Default configurations
+      qrEngineInstance = new QRCodeStyling({
+        width: 280,
+        height: 280,
+        data: 'https://qrguy.com',
+        type: 'svg',
+        dotsOptions: {
+          color: '#171717',
+          type: 'square'
+        },
+        backgroundOptions: {
+          color: '#ffffff',
+        },
+        imageOptions: {
+          crossOrigin: 'anonymous',
+          margin: 4,
+          imageSizeFactor: 0.15,
+          hideBackgroundDots: true
+        }
+      });
+      
+      qrEngineInstance.append(elWrapper);
+      
+      bindEvents();
+      loadStoredSettings();
+      triggerGenerate(true);
+    } catch (e) {
+      console.error("Failed to load qr-code-styling client library:", e);
+    }
+  }
+
+  // Load state or settings
+  function loadStoredSettings() {
+    const saved = localStorage.getItem('qrguy_latest_config');
+    if (saved) {
+      try {
+        const config = JSON.parse(saved);
+        if (config.data) {
+          if (config.data.startsWith('WIFI:')) {
+            switchMethod('code');
+            selectTemplate('wifi');
+            // Parse wifi
+            const matchSsid = config.data.match(/S:([^;]+)/);
+            const matchPass = config.data.match(/P:([^;]+)/);
+            const matchType = config.data.match(/T:([^;]+)/);
+            if (matchSsid) elWifiSsid.value = matchSsid[1];
+            if (matchPass) elWifiPass.value = matchPass[1];
+            if (matchType) elWifiType.value = matchType[1];
+            elCode.value = config.data;
+          } else if (config.data.startsWith('BEGIN:VCARD')) {
+            switchMethod('code');
+            selectTemplate('vcard');
+            // Populate fields roughly
+            const matchFn = config.data.match(/FN:([^\n]+)/);
+            const matchTel = config.data.match(/TEL:([^\n]+)/);
+            const matchEmail = config.data.match(/EMAIL:([^\n]+)/);
+            const matchOrg = config.data.match(/ORG:([^\n]+)/);
+            if (matchFn) elVcardName.value = matchFn[1].trim();
+            if (matchTel) elVcardPhone.value = matchTel[1].trim();
+            if (matchEmail) elVcardEmail.value = matchEmail[1].trim();
+            if (matchOrg) elVcardOrg.value = matchOrg[1].trim();
+            elCode.value = config.data;
+          } else if (config.data.startsWith('tel:') || config.data.startsWith('SMSTO:')) {
+            switchMethod('phone');
+            if (config.data.startsWith('SMSTO:')) {
+              elPhoneAction.value = 'sms';
+              elSmsBodyContainer.classList.remove('hidden');
+              const parts = config.data.split(':');
+              elPhone.value = parts[1] || '';
+              elSmsBody.value = parts.slice(2).join(':') || '';
+            } else {
+              elPhoneAction.value = 'tel';
+              elPhone.value = config.data.replace('tel:', '');
+            }
+          } else {
+            switchMethod('url');
+            elUrl.value = config.data;
+          }
+        }
+        
+        // Restore shapes
+        if (config.dotsType) elShapeDots.value = config.dotsType;
+        if (config.eyeFrameType) elShapeEyeFrame.value = config.eyeFrameType;
+        if (config.eyeBallType) elShapeEyeBall.value = config.eyeBallType;
+        
+        // Colors
+        if (config.isGradient) {
+          setFgStyle('gradient');
+          if (config.gradientColor1) {
+            elGradStart.value = config.gradientColor1;
+            elGradStartText.value = config.gradientColor1;
+          }
+          if (config.gradientColor2) {
+            elGradEnd.value = config.gradientColor2;
+            elGradEndText.value = config.gradientColor2;
+          }
+          if (config.gradientType) elGradType.value = config.gradientType;
+          if (config.gradientAngle) elGradAngle.value = config.gradientAngle;
+        } else {
+          setFgStyle('solid');
+          if (config.foregroundColor) {
+            elColorFg.value = config.foregroundColor;
+            elColorFgText.value = config.foregroundColor;
+          }
+        }
+
+        // Background
+        if (config.transparentBg) {
+          elBgTransparent.checked = true;
+        } else if (config.backgroundColor) {
+          elColorBg.value = config.backgroundColor;
+          elColorBgText.value = config.backgroundColor;
+          elBgTransparent.checked = false;
+        }
+
+        // Custom corners
+        if (config.overrideEyeColors) {
+          elEyeColorOverride.checked = true;
+          elEyeColorsContainer.classList.remove('hidden');
+          if (config.eyeFrameColor) {
+            elColorEyeFrame.value = config.eyeFrameColor;
+            elColorEyeFrameText.value = config.eyeFrameColor;
+          }
+          if (config.eyeBallColor) {
+            elColorEyeBall.value = config.eyeBallColor;
+            elColorEyeBallText.value = config.eyeBallColor;
+          }
+        }
+
+        // Advanced
+        if (config.ecl) elQrEcl.value = config.ecl;
+        if (config.size) {
+          elQrResolution.value = config.size;
+          elLblQrResolution.innerText = `${config.size}px`;
+        }
+        if (config.margin) {
+          elQrMargin.value = config.margin;
+          elLblQrMargin.innerText = `${config.margin}px`;
+        }
+        
+        // Logo
+        if (config.logoPreset && config.logoPreset !== 'none') {
+          elLogoPreset.value = config.logoPreset;
+          elLogoSettings.classList.remove('hidden');
+          if (config.logoSize) {
+            elLogoSize.value = config.logoSize;
+            elLblLogoSize.innerText = `${Math.round(config.logoSize * 100)}%`;
+          }
+          if (config.logoMargin) {
+            elLogoMargin.value = config.logoMargin;
+            elLblLogoMargin.innerText = `${config.logoMargin}px`;
+          }
+          elLogoBgClean.checked = config.logoBgClean !== false;
+        }
+      } catch (err) {
+        console.warn("Failed to load last config cache:", err);
+      }
+    }
+  }
+
+  // Handle Event bindings
+  function bindEvents() {
+    // Methods Toggle
+    document.getElementById('btn-method-url').addEventListener('click', () => switchMethod('url'));
+    document.getElementById('btn-method-phone').addEventListener('click', () => switchMethod('phone'));
+    document.getElementById('btn-method-code').addEventListener('click', () => switchMethod('code'));
+
+    // Input handlers
+    elUrl.addEventListener('input', () => triggerGenerate());
+    elPhone.addEventListener('input', () => triggerGenerate());
+    elPhoneAction.addEventListener('change', () => {
+      if (elPhoneAction.value === 'sms') {
+        elSmsBodyContainer.classList.remove('hidden');
+      } else {
+        elSmsBodyContainer.classList.add('hidden');
+      }
+      triggerGenerate();
+    });
+    elSmsBody.addEventListener('input', () => triggerGenerate());
+    elCode.addEventListener('input', () => triggerGenerate());
+
+    // Wi-Fi inputs
+    elWifiSsid.addEventListener('input', updateWifiString);
+    elWifiPass.addEventListener('input', updateWifiString);
+    elWifiType.addEventListener('change', updateWifiString);
+
+    // VCard inputs
+    elVcardName.addEventListener('input', updateVcardString);
+    elVcardPhone.addEventListener('input', updateVcardString);
+    elVcardEmail.addEventListener('input', updateVcardString);
+    elVcardOrg.addEventListener('input', updateVcardString);
+
+    // Templates Toggle inside Code Method
+    btnTplRaw.addEventListener('click', () => selectTemplate('raw'));
+    btnTplWifi.addEventListener('click', () => selectTemplate('wifi'));
+    btnTplVcard.addEventListener('click', () => selectTemplate('vcard'));
+
+    // Colors
+    elFgSolid.addEventListener('click', () => setFgStyle('solid'));
+    elFgGradient.addEventListener('click', () => setFgStyle('gradient'));
+    
+    // Bind hex inputs and visual pickers
+    bindColorPicker(elColorFg, elColorFgText);
+    bindColorPicker(elColorBg, elColorBgText);
+    bindColorPicker(elGradStart, elGradStartText);
+    bindColorPicker(elGradEnd, elGradEndText);
+    bindColorPicker(elColorEyeFrame, elColorEyeFrameText);
+    bindColorPicker(elColorEyeBall, elColorEyeBallText);
+
+    elBgTransparent.addEventListener('change', () => {
+      if (elBgTransparent.checked) {
+        elColorBg.disabled = true;
+        elColorBgText.disabled = true;
+        elColorBgText.value = 'TRANSPARENT';
+      } else {
+        elColorBg.disabled = false;
+        elColorBgText.disabled = false;
+        elColorBgText.value = elColorBg.value.toUpperCase();
+      }
+      triggerGenerate();
+    });
+
+    elEyeColorOverride.addEventListener('change', () => {
+      if (elEyeColorOverride.checked) {
+        elEyeColorsContainer.classList.remove('hidden');
+      } else {
+        elEyeColorsContainer.classList.add('hidden');
+      }
+      triggerGenerate();
+    });
+
+    // Shapes
+    elShapeDots.addEventListener('change', () => triggerGenerate());
+    elShapeEyeFrame.addEventListener('change', () => triggerGenerate());
+    elShapeEyeBall.addEventListener('change', () => triggerGenerate());
+
+    // Logo Upload
+    elLogoUpload.addEventListener('change', handleLogoUpload);
+    elLogoPreset.addEventListener('change', handleLogoPresetChange);
+    
+    elLogoSize.addEventListener('input', () => {
+      elLblLogoSize.innerText = `${Math.round(parseFloat(elLogoSize.value) * 100)}%`;
+      triggerGenerate();
+    });
+    
+    elLogoMargin.addEventListener('input', () => {
+      elLblLogoMargin.innerText = `${elLogoMargin.value}px`;
+      triggerGenerate();
+    });
+
+    elLogoBgClean.addEventListener('change', () => triggerGenerate());
+
+    // Advanced
+    elQrEcl.addEventListener('change', () => {
+      elInfoEcl.innerText = `ECL: ${elQrEcl.value}`;
+      triggerGenerate();
+    });
+
+    elQrResolution.addEventListener('input', () => {
+      elLblQrResolution.innerText = `${elQrResolution.value}px`;
+      elInfoRes.innerText = `${elQrResolution.value} × ${elQrResolution.value} px`;
+      triggerGenerate();
+    });
+
+    elQrMargin.addEventListener('input', () => {
+      elLblQrMargin.innerText = `${elQrMargin.value}px`;
+      triggerGenerate();
+    });
+
+    // Presets Click
+    document.querySelectorAll('[data-preset]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const target = e.currentTarget;
+        const presetName = target.getAttribute('data-preset');
+        applyPreset(presetName);
+      });
+    });
+
+    // Downloads
+    elDlPng.addEventListener('click', () => downloadQR('png'));
+    elDlSvg.addEventListener('click', () => downloadQR('svg'));
+    elDlJpeg.addEventListener('click', () => downloadQR('jpeg'));
+
+    // Copy SVG/PNG
+    elCopySvg.addEventListener('click', copySvgCode);
+    elCopyPng.addEventListener('click', copyPngImage);
+
+    // Toast Close
+    document.getElementById('btn-toast-close').addEventListener('click', () => {
+      elToast.classList.add('hidden', 'opacity-0');
+    });
+
+    // Watch start-generating custom events
+    window.addEventListener('hashchange', () => {
+      if (window.location.hash === '#generator') {
+        switchMethod('url');
+      }
+    });
+  }
+
+  // Link pickers
+  function bindColorPicker(picker, textEl) {
+    picker.addEventListener('input', () => {
+      textEl.value = picker.value.toUpperCase();
+      triggerGenerate();
+    });
+    textEl.addEventListener('input', () => {
+      let hex = textEl.value;
+      if (!hex.startsWith('#') && hex.length === 6) {
+        hex = '#' + hex;
+      }
+      if (/^#[0-9A-F]{6}$/i.test(hex)) {
+        picker.value = hex;
+        triggerGenerate();
+      }
+    });
+  }
+
+  // Helper Switch Methods
+  function switchMethod(method) {
+    currentMethod = method;
+    methodTabs.forEach(btn => {
+      btn.classList.remove('border-primary', 'text-ink');
+      btn.classList.add('border-transparent', 'text-body', 'hover:text-ink');
+    });
+    methodPanes.forEach(pane => pane.classList.add('hidden'));
+
+    if (method === 'url') {
+      document.getElementById('btn-method-url').classList.add('border-primary', 'text-ink');
+      document.getElementById('btn-method-url').classList.remove('border-transparent', 'text-body');
+      document.getElementById('method-url-pane').classList.remove('hidden');
+    } else if (method === 'phone') {
+      document.getElementById('btn-method-phone').classList.add('border-primary', 'text-ink');
+      document.getElementById('btn-method-phone').classList.remove('border-transparent', 'text-body');
+      document.getElementById('method-phone-pane').classList.remove('hidden');
+    } else if (method === 'code') {
+      document.getElementById('btn-method-code').classList.add('border-primary', 'text-ink');
+      document.getElementById('btn-method-code').classList.remove('border-transparent', 'text-body');
+      document.getElementById('method-code-pane').classList.remove('hidden');
+    }
+    triggerGenerate();
+  }
+
+  // Switch Code templates
+  function selectTemplate(tpl) {
+    btnTplRaw.classList.remove('border-primary', 'bg-primary', 'text-on-primary');
+    btnTplWifi.classList.remove('border-primary', 'bg-primary', 'text-on-primary');
+    btnTplVcard.classList.remove('border-primary', 'bg-primary', 'text-on-primary');
+    
+    // add secondary styles
+    [btnTplRaw, btnTplWifi, btnTplVcard].forEach(btn => {
+      btn.classList.add('border-hairline', 'text-body', 'hover:bg-canvas-soft-2');
+    });
+
+    helperWifi.classList.add('hidden');
+    helperVcard.classList.add('hidden');
+
+    if (tpl === 'raw') {
+      btnTplRaw.classList.add('border-primary', 'bg-primary', 'text-on-primary');
+      btnTplRaw.classList.remove('border-hairline', 'text-body', 'hover:bg-canvas-soft-2');
+      elCode.placeholder = "Enter text or code content...";
+    } else if (tpl === 'wifi') {
+      btnTplWifi.classList.add('border-primary', 'bg-primary', 'text-on-primary');
+      btnTplWifi.classList.remove('border-hairline', 'text-body', 'hover:bg-canvas-soft-2');
+      helperWifi.classList.remove('hidden');
+      updateWifiString();
+    } else if (tpl === 'vcard') {
+      btnTplVcard.classList.add('border-primary', 'bg-primary', 'text-on-primary');
+      btnTplVcard.classList.remove('border-hairline', 'text-body', 'hover:bg-canvas-soft-2');
+      helperVcard.classList.remove('hidden');
+      updateVcardString();
+    }
+  }
+
+  // WiFi generation formatting
+  function updateWifiString() {
+    const ssid = elWifiSsid.value || '';
+    const pass = elWifiPass.value || '';
+    const sec = elWifiType.value;
+    
+    // Format: WIFI:S:SSID;T:WPA;P:PASSWORD;;
+    const wifiString = `WIFI:S:${ssid};T:${sec};P:${pass};;`;
+    elCode.value = wifiString;
+    triggerGenerate();
+  }
+
+  // VCard generation formatting
+  function updateVcardString() {
+    const name = elVcardName.value || '';
+    const phone = elVcardPhone.value || '';
+    const email = elVcardEmail.value || '';
+    const org = elVcardOrg.value || '';
+
+    // Format VCARD
+    const vcardString = `BEGIN:VCARD
+VERSION:3.0
+FN:${name}
+ORG:${org}
+TEL:${phone}
+EMAIL:${email}
+END:VCARD`;
+
+    elCode.value = vcardString;
+    triggerGenerate();
+  }
+
+  // Set Foreground color style
+  function setFgStyle(style) {
+    if (style === 'solid') {
+      isGradient = false;
+      elFgSolid.classList.add('bg-canvas', 'border', 'border-hairline', 'text-ink');
+      elFgSolid.classList.remove('text-body');
+      elFgGradient.classList.remove('bg-canvas', 'border', 'border-hairline', 'text-ink');
+      elFgGradient.classList.add('text-body');
+      
+      elFgSolidContainer.classList.remove('hidden');
+      elFgGradientContainer.classList.add('hidden');
+    } else {
+      isGradient = true;
+      elFgGradient.classList.add('bg-canvas', 'border', 'border-hairline', 'text-ink');
+      elFgGradient.classList.remove('text-body');
+      elFgSolid.classList.remove('bg-canvas', 'border', 'border-hairline', 'text-ink');
+      elFgSolid.classList.add('text-body');
+
+      elFgSolidContainer.classList.add('hidden');
+      elFgGradientContainer.classList.remove('hidden');
+    }
+    triggerGenerate();
+  }
+
+  // Handle Logo uploading
+  function handleLogoUpload(e) {
+    const file = e.target.files[0];
+    if (file) {
+      // Force preset select to none
+      elLogoPreset.value = 'none';
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        customLogoDataUrl = event.target.result;
+        elLogoSettings.classList.remove('hidden');
+        
+        // Auto force High ECL for logos
+        elQrEcl.value = 'H';
+        elInfoEcl.innerText = 'ECL: High';
+        
+        triggerGenerate();
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  // Handle Preset Logos selection
+  function handleLogoPresetChange() {
+    const val = elLogoPreset.value;
+    if (val !== 'none') {
+      // Clear manual upload file
+      elLogoUpload.value = '';
+      customLogoDataUrl = '';
+      elLogoSettings.classList.remove('hidden');
+      
+      // Auto force High ECL
+      elQrEcl.value = 'H';
+      elInfoEcl.innerText = 'ECL: High';
+    } else {
+      if (!customLogoDataUrl) {
+        elLogoSettings.classList.add('hidden');
+      }
+    }
+    triggerGenerate();
+  }
+
+  // Get active logo URL (Custom upload or Preset inline SVG)
+  function getActiveLogo() {
+    if (customLogoDataUrl) return customLogoDataUrl;
+    
+    const preset = elLogoPreset.value;
+    if (preset !== 'none') {
+      return PRESET_SVGS[preset] || '';
+    }
+    return '';
+  }
+
+  // Preset Applicator
+  function applyPreset(presetName) {
+    // Reset active border
+    document.querySelectorAll('[data-preset]').forEach(btn => {
+      btn.classList.remove('border-primary', 'text-ink');
+      btn.classList.add('border-hairline', 'text-body');
+    });
+
+    const activeBtn = document.querySelector(`[data-preset="${presetName}"]`);
+    if (activeBtn) {
+      activeBtn.classList.add('border-primary', 'text-ink');
+      activeBtn.classList.remove('border-hairline', 'text-body');
+    }
+
+    // Clear uploads
+    elLogoUpload.value = '';
+    customLogoDataUrl = '';
+    elLogoPreset.value = 'none';
+    elLogoSettings.classList.add('hidden');
+
+    if (presetName === 'stark') {
+      setFgStyle('solid');
+      elColorFg.value = '#171717';
+      elColorFgText.value = '#171717';
+      
+      elBgTransparent.checked = false;
+      elColorBg.value = '#ffffff';
+      elColorBgText.value = '#FFFFFF';
+      elColorBg.disabled = false;
+      elColorBgText.disabled = false;
+
+      elShapeDots.value = 'square';
+      elShapeEyeFrame.value = 'square';
+      elShapeEyeBall.value = 'square';
+
+      elEyeColorOverride.checked = false;
+      elEyeColorsContainer.classList.add('hidden');
+    } 
+    else if (presetName === 'cyber') {
+      setFgStyle('gradient');
+      elGradStart.value = '#7928ca';
+      elGradStartText.value = '#7928CA';
+      elGradEnd.value = '#ff0080';
+      elGradEndText.value = '#FF0080';
+      elGradType.value = 'linear';
+      elGradAngle.value = '45';
+
+      elBgTransparent.checked = false;
+      elColorBg.value = '#0a0a0a';
+      elColorBgText.value = '#0A0A0A';
+      elColorBg.disabled = false;
+      elColorBgText.disabled = false;
+
+      elShapeDots.value = 'classy';
+      elShapeEyeFrame.value = 'rounded';
+      elShapeEyeBall.value = 'square';
+
+      elEyeColorOverride.checked = false;
+      elEyeColorsContainer.classList.add('hidden');
+    } 
+    else if (presetName === 'mint') {
+      setFgStyle('gradient');
+      elGradStart.value = '#0070f3';
+      elGradStartText.value = '#0070F3';
+      elGradEnd.value = '#50e3c2';
+      elGradEndText.value = '#50E3C2';
+      elGradType.value = 'linear';
+      elGradAngle.value = '135';
+
+      elBgTransparent.checked = true;
+      elColorBg.disabled = true;
+      elColorBgText.disabled = true;
+      elColorBgText.value = 'TRANSPARENT';
+
+      elShapeDots.value = 'rounded';
+      elShapeEyeFrame.value = 'extra-rounded';
+      elShapeEyeBall.value = 'dot';
+
+      elEyeColorOverride.checked = false;
+      elEyeColorsContainer.classList.add('hidden');
+    }
+    else if (presetName === 'sunset') {
+      setFgStyle('gradient');
+      elGradStart.value = '#ff4d4d';
+      elGradStartText.value = '#FF4D4D';
+      elGradEnd.value = '#f9cb28';
+      elGradEndText.value = '#F9CB28';
+      elGradType.value = 'linear';
+      elGradAngle.value = '90';
+
+      elBgTransparent.checked = false;
+      elColorBg.value = '#fafafa';
+      elColorBgText.value = '#FAFAFA';
+      elColorBg.disabled = false;
+      elColorBgText.disabled = false;
+
+      elShapeDots.value = 'dots';
+      elShapeEyeFrame.value = 'extra-rounded';
+      elShapeEyeBall.value = 'dot';
+
+      elEyeColorOverride.checked = false;
+      elEyeColorsContainer.classList.add('hidden');
+    }
+    else if (presetName === 'classic') {
+      setFgStyle('solid');
+      elColorFg.value = '#000000';
+      elColorFgText.value = '#000000';
+
+      elBgTransparent.checked = false;
+      elColorBg.value = '#ffffff';
+      elColorBgText.value = '#FFFFFF';
+      elColorBg.disabled = false;
+      elColorBgText.disabled = false;
+
+      elShapeDots.value = 'square';
+      elShapeEyeFrame.value = 'square';
+      elShapeEyeBall.value = 'square';
+
+      elEyeColorOverride.checked = false;
+      elEyeColorsContainer.classList.add('hidden');
+    }
+
+    triggerGenerate(true);
+  }
+
+  // Real-time generator trigger with debounce
+  function triggerGenerate(immediate = false) {
+    if (generateTimeout) clearTimeout(generateTimeout);
+    
+    if (immediate) {
+      generateQR();
+    } else {
+      elLoading.classList.remove('hidden');
+      generateTimeout = setTimeout(generateQR, 350);
+    }
+  }
+
+  // Build the configuration options object for qr-code-styling
+  function generateOptions(isExport = false, exportSize = 500) {
+    // Determine raw QR string data
+    let qrData = 'https://qrguy.com';
+    if (currentMethod === 'url') {
+      let url = elUrl.value.trim();
+      if (url) {
+        if (!/^https?:\/\//i.test(url)) {
+          url = 'https://' + url;
+        }
+        qrData = url;
+      }
+    } else if (currentMethod === 'phone') {
+      const phone = elPhone.value.trim();
+      if (elPhoneAction.value === 'sms') {
+        const sms = elSmsBody.value || '';
+        qrData = `SMSTO:${phone}:${sms}`;
+      } else {
+        qrData = `tel:${phone}`;
+      }
+    } else if (currentMethod === 'code') {
+      qrData = elCode.value || ' ';
+    }
+
+    // Size parameters
+    const size = isExport ? exportSize : 280;
+
+    // Corner styles override
+    const overrideCorners = elEyeColorOverride.checked;
+    
+    // Core Dots configuration
+    const dotsOptions = {
+      type: elShapeDots.value,
+    };
+
+    if (isGradient) {
+      dotsOptions.gradient = {
+        type: elGradType.value,
+        rotation: (parseInt(elGradAngle.value) * Math.PI) / 180,
+        colorStops: [
+          { offset: 0, color: elGradStart.value },
+          { offset: 1, color: elGradEnd.value }
+        ]
+      };
+    } else {
+      dotsOptions.color = elColorFg.value;
+    }
+
+    // Corner Eye frame configuration
+    const cornersSquareOptions = {
+      type: elShapeEyeFrame.value
+    };
+    if (overrideCorners) {
+      cornersSquareOptions.color = elColorEyeFrame.value;
+    } else if (isGradient) {
+      cornersSquareOptions.gradient = {
+        type: elGradType.value,
+        rotation: (parseInt(elGradAngle.value) * Math.PI) / 180,
+        colorStops: [
+          { offset: 0, color: elGradStart.value },
+          { offset: 1, color: elGradEnd.value }
+        ]
+      };
+    } else {
+      cornersSquareOptions.color = elColorFg.value;
+    }
+
+    // Corner Eye ball configuration
+    const cornersDotOptions = {
+      type: elShapeEyeBall.value
+    };
+    if (overrideCorners) {
+      cornersDotOptions.color = elColorEyeBall.value;
+    } else if (isGradient) {
+      cornersDotOptions.gradient = {
+        type: elGradType.value,
+        rotation: (parseInt(elGradAngle.value) * Math.PI) / 180,
+        colorStops: [
+          { offset: 0, color: elGradStart.value },
+          { offset: 1, color: elGradEnd.value }
+        ]
+      };
+    } else {
+      cornersDotOptions.color = elColorFg.value;
+    }
+
+    // Background color
+    const backgroundOptions = {
+      color: elBgTransparent.checked ? 'transparent' : elColorBg.value
+    };
+
+    // Brand logo
+    const logoUrl = getActiveLogo();
+    const logoSize = parseFloat(elLogoSize.value);
+    const logoMargin = parseInt(elLogoMargin.value);
+    const logoBgClean = elLogoBgClean.checked;
+
+    return {
+      width: size,
+      height: size,
+      data: qrData,
+      margin: parseInt(elQrMargin.value),
+      type: 'svg',
+      qrOptions: {
+        typeNumber: 0, // Auto
+        mode: 'Byte',
+        errorCorrectionLevel: elQrEcl.value
+      },
+      image: logoUrl,
+      dotsOptions,
+      backgroundOptions,
+      cornersSquareOptions,
+      cornersDotOptions,
+      imageOptions: {
+        crossOrigin: 'anonymous',
+        margin: logoMargin,
+        imageSizeFactor: logoSize,
+        hideBackgroundDots: logoBgClean
+      }
+    };
+  }
+
+  // Generate & Render QR in real-time
+  async function generateQR() {
+    if (!qrEngineInstance) return;
+
+    try {
+      const opts = generateOptions();
+      qrEngineInstance.update(opts);
+      
+      // Save settings to Local Storage cache
+      saveToConfigCache(opts);
+      
+      // Append generated design configuration to History log (debounced)
+      saveToHistoryLog(opts);
+    } catch (e) {
+      console.error("Rendering failed:", e);
+    } finally {
+      elLoading.classList.add('hidden');
+    }
+  }
+
+  // Save Config Cache
+  function saveToConfigCache(opts) {
+    const cache = {
+      data: opts.data,
+      size: parseInt(elQrResolution.value),
+      margin: opts.margin,
+      dotsType: opts.dotsOptions.type,
+      eyeFrameType: opts.cornersSquareOptions.type,
+      eyeBallType: opts.cornersDotOptions.type,
+      isGradient,
+      gradientColor1: elGradStart.value,
+      gradientColor2: elGradEnd.value,
+      gradientType: elGradType.value,
+      gradientAngle: elGradAngle.value,
+      foregroundColor: elColorFg.value,
+      backgroundColor: elColorBg.value,
+      transparentBg: elBgTransparent.checked,
+      overrideEyeColors: elEyeColorOverride.checked,
+      eyeFrameColor: elColorEyeFrame.value,
+      eyeBallColor: elColorEyeBall.value,
+      logoPreset: elLogoPreset.value,
+      logoSize: opts.imageOptions.imageSizeFactor,
+      logoMargin: opts.imageOptions.margin,
+      logoBgClean: opts.imageOptions.hideBackgroundDots,
+      ecl: opts.qrOptions.errorCorrectionLevel
+    };
+    localStorage.setItem('qrguy_latest_config', JSON.stringify(cache));
+  }
+
+  // Debounced auto history saver
+  let historyDebounce = null;
+  function saveToHistoryLog(opts) {
+    if (historyDebounce) clearTimeout(historyDebounce);
+    historyDebounce = setTimeout(() => {
+      let history = [];
+      try {
+        history = JSON.parse(localStorage.getItem('qrguy_history') || '[]');
+      } catch(e) {}
+
+      // Avoid saving blank or repeating identical entries sequentially
+      if (history.length > 0 && history[0].data === opts.data && history[0].dotsType === opts.dotsOptions.type) {
+        return;
+      }
+
+      // Add to front
+      const newEntry = {
+        id: 'qr_' + Date.now(),
+        date: new Date().toISOString(),
+        data: opts.data,
+        type: currentMethod,
+        dotsType: opts.dotsOptions.type,
+        color: isGradient ? `${opts.dotsOptions.gradient.colorStops[0].color}→${opts.dotsOptions.gradient.colorStops[1].color}` : opts.dotsOptions.color,
+        ecl: opts.qrOptions.errorCorrectionLevel
+      };
+
+      history.unshift(newEntry);
+      
+      // Limit to 30 entries
+      if (history.length > 30) history.pop();
+      
+      localStorage.setItem('qrguy_history', JSON.stringify(history));
+
+      // Trigger badges/tables reload
+      window.dispatchEvent(new CustomEvent('history-updated'));
+    }, 1500); // 1.5s delay after user stops typing
+  }
+
+  // File Download Triggers
+  async function downloadQR(format) {
+    if (!QRCodeStyling) return;
+    
+    try {
+      const resSize = parseInt(elQrResolution.value);
+      const downloadOptions = generateOptions(true, resSize);
+      
+      // Create separate download instance to prevent main canvas resizing
+      const downloader = new QRCodeStyling(downloadOptions);
+      
+      const fileName = `qrguy-code-${Date.now()}`;
+      await downloader.download({
+        name: fileName,
+        extension: format
+      });
+      
+      showToast(`Downloaded QR code as ${format.toUpperCase()}!`);
+    } catch(e) {
+      console.error("Download failed:", e);
+      showToast("Download failed. Try another format.", true);
+    }
+  }
+
+  // Copy SVG XML code
+  async function copySvgCode() {
+    const svgEl = elWrapper.querySelector('svg');
+    if (svgEl) {
+      try {
+        const svgString = svgEl.outerHTML;
+        await navigator.clipboard.writeText(svgString);
+        showToast("SVG XML copied to clipboard!");
+      } catch (err) {
+        showToast("Clipboard write blocked.", true);
+      }
+    } else {
+      showToast("No SVG generated yet.", true);
+    }
+  }
+
+  // Copy PNG image to clipboard
+  async function copyPngImage() {
+    // Generate high quality PNG blob client-side
+    const resSize = parseInt(elQrResolution.value);
+    const opts = generateOptions(true, resSize);
+    
+    // Set format to canvas
+    opts.type = 'canvas';
+    
+    try {
+      const pngRenderer = new QRCodeStyling(opts);
+      
+      // Render to offscreen canvas
+      const div = document.createElement('div');
+      await pngRenderer.append(div);
+      
+      // Wait microtask for canvas render
+      setTimeout(async () => {
+        const canvas = div.querySelector('canvas');
+        if (canvas) {
+          canvas.toBlob(async (blob) => {
+            if (blob) {
+              try {
+                const item = new ClipboardItem({ "image/png": blob });
+                await navigator.clipboard.write([item]);
+                showToast("PNG Image copied to clipboard!");
+              } catch(e) {
+                showToast("Clipboard copy failed. Try exporting SVG instead.", true);
+              }
+            }
+          });
+        } else {
+          showToast("Canvas error.", true);
+        }
+      }, 100);
+    } catch (e) {
+      showToast("Copy failed.", true);
+    }
+  }
+
+  // Toast Alerts Trigger
+  function showToast(text, isError = false) {
+    elToastText.innerText = text;
+    
+    // Apply styling
+    if (isError) {
+      elToast.className = "flex items-center justify-between p-3.5 rounded-md border border-error bg-error-soft text-error-deep shadow-level-3 text-xs transition-opacity duration-300";
+    } else {
+      elToast.className = "flex items-center justify-between p-3.5 rounded-md border border-hairline bg-canvas text-ink shadow-level-3 text-xs transition-opacity duration-300";
+    }
+    
+    elToast.classList.remove('hidden');
+    // Force browser repaint
+    void elToast.offsetWidth;
+    elToast.classList.add('opacity-100');
+
+    // Auto hide
+    setTimeout(() => {
+      elToast.classList.remove('opacity-100');
+      setTimeout(() => elToast.classList.add('hidden'), 300);
+    }, 3500);
+  }
+
+  // Listen to load events
+  if (typeof window !== 'undefined') {
+    window.addEventListener('DOMContentLoaded', initApp);
+  }
+</script>

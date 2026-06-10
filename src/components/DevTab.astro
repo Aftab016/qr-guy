@@ -147,22 +147,23 @@ with open(<span class="text-white">'qr.svg'</span>, <span class="text-white">'wb
 
 <script>
   // Tab caching
-  const tabDeveloper = document.getElementById('tab-developer');
+  const tabDeveloper = document.getElementById('tab-developer') as HTMLElement;
   
   // Editor selectors
-  const btnCurl = document.getElementById('tab-code-curl');
-  const btnJs = document.getElementById('tab-code-js');
-  const btnPy = document.getElementById('tab-code-py');
+  const btnCurl = document.getElementById('tab-code-curl') as HTMLButtonElement;
+  const btnJs = document.getElementById('tab-code-js') as HTMLButtonElement;
+  const btnPy = document.getElementById('tab-code-py') as HTMLButtonElement;
   
-  const blockCurl = document.getElementById('code-block-curl');
-  const blockJs = document.getElementById('code-block-js');
-  const blockPy = document.getElementById('code-block-py');
+  const blockCurl = document.getElementById('code-block-curl') as HTMLElement;
+  const blockJs = document.getElementById('code-block-js') as HTMLElement;
+  const blockPy = document.getElementById('code-block-py') as HTMLElement;
   
-  const elFilename = document.getElementById('editor-filename');
+  const elFilename = document.getElementById('editor-filename') as HTMLElement;
 
   // Listen to tab views
-  window.addEventListener('tab-change', (e) => {
-    const activeTab = e.detail.tab;
+  window.addEventListener('tab-change', (e: Event) => {
+    const customEvent = e as CustomEvent<{ tab: string }>;
+    const activeTab = customEvent.detail.tab;
     if (activeTab === 'developer') {
       tabDeveloper.classList.remove('hidden');
     } else {
@@ -175,7 +176,7 @@ with open(<span class="text-white">'qr.svg'</span>, <span class="text-white">'wb
   btnJs.addEventListener('click', () => switchLanguage('js'));
   btnPy.addEventListener('click', () => switchLanguage('py'));
 
-  function switchLanguage(lang) {
+  function switchLanguage(lang: string) {
     // Reset tabs
     [btnCurl, btnJs, btnPy].forEach(btn => {
       btn.className = "code-lang-btn px-4 py-2 border-b border-transparent text-mute hover:text-on-primary focus:outline-none cursor-pointer";

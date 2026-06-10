@@ -53,16 +53,27 @@
 </div>
 
 <script>
-  let QRCodeStyling;
+  import type { default as QRCodeStylingType } from 'qr-code-styling';
+  let QRCodeStyling: typeof QRCodeStylingType;
+
+  interface HistoryItem {
+    id: string;
+    date: string;
+    data: string;
+    type: string;
+    dotsType: string;
+    color: string;
+    ecl?: string;
+  }
 
   // Cache elements
-  const tabHistory = document.getElementById('tab-history');
-  const tableContainer = document.getElementById('history-table-container');
-  const tableBody = document.getElementById('history-table-body');
-  const emptyState = document.getElementById('history-empty-state');
-  const btnClearAll = document.getElementById('btn-clear-all-history');
-  const btnGoToGen = document.getElementById('btn-history-goto-gen');
-  const navBadge = document.getElementById('history-badge');
+  const tabHistory = document.getElementById('tab-history') as HTMLElement;
+  const tableContainer = document.getElementById('history-table-container') as HTMLElement;
+  const tableBody = document.getElementById('history-table-body') as HTMLElement;
+  const emptyState = document.getElementById('history-empty-state') as HTMLElement;
+  const btnClearAll = document.getElementById('btn-clear-all-history') as HTMLButtonElement;
+  const btnGoToGen = document.getElementById('btn-history-goto-gen') as HTMLButtonElement;
+  const navBadge = document.getElementById('history-badge') as HTMLElement;
 
   // Load styling dynamically
   async function loadLibrary() {
@@ -74,8 +85,9 @@
   }
 
   // Listen for tab views
-  window.addEventListener('tab-change', (e) => {
-    const activeTab = e.detail.tab;
+  window.addEventListener('tab-change', (e: Event) => {
+    const customEvent = e as CustomEvent<{ tab: string }>;
+    const activeTab = customEvent.detail.tab;
     if (activeTab === 'history') {
       tabHistory.classList.remove('hidden');
       loadLibrary().then(renderHistoryTable);
@@ -88,7 +100,7 @@
   window.addEventListener('history-updated', updateNavBadge);
   window.addEventListener('DOMContentLoaded', updateNavBadge);
 
-  function getHistory() {
+  function getHistory(): HistoryItem[] {
     try {
       return JSON.parse(localStorage.getItem('qrguy_history') || '[]');
     } catch(e) {
@@ -189,7 +201,7 @@
   }
 
   // Escape HTML helper
-  function escapeHtml(text) {
+  function escapeHtml(text: string) {
     return text
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
@@ -203,7 +215,8 @@
     // Delete individual
     document.querySelectorAll('[data-del-id]').forEach(btn => {
       btn.addEventListener('click', (e) => {
-        const id = e.currentTarget.getAttribute('data-del-id');
+        const target = e.currentTarget as HTMLButtonElement;
+        const id = target.getAttribute('data-del-id');
         let history = getHistory();
         history = history.filter(item => item.id !== id);
         localStorage.setItem('qrguy_history', JSON.stringify(history));
@@ -215,12 +228,13 @@
     // Load individual
     document.querySelectorAll('[data-load-id]').forEach(btn => {
       btn.addEventListener('click', (e) => {
-        const id = e.currentTarget.getAttribute('data-load-id');
+        const target = e.currentTarget as HTMLButtonElement;
+        const id = target.getAttribute('data-load-id');
         const history = getHistory();
         const found = history.find(item => item.id === id);
         if (found) {
           // Set values into config storage
-          let currentConfig = {};
+          let currentConfig: any = {};
           try {
             currentConfig = JSON.parse(localStorage.getItem('qrguy_latest_config') || '{}');
           } catch(e) {}
@@ -240,13 +254,14 @@
     // Quick download individual
     document.querySelectorAll('[data-dl-id]').forEach(btn => {
       btn.addEventListener('click', async (e) => {
-        const id = e.currentTarget.getAttribute('data-dl-id');
+        const target = e.currentTarget as HTMLButtonElement;
+        const id = target.getAttribute('data-dl-id');
         const history = getHistory();
         const found = history.find(item => item.id === id);
         if (found && QRCodeStyling) {
           try {
-            e.currentTarget.innerText = "Generating...";
-            const opts = {
+            target.innerText = "Generating...";
+            const opts: any = {
               width: 500,
               height: 500,
               data: found.data,
@@ -269,7 +284,7 @@
           } catch (err) {
             console.error(err);
           } finally {
-            e.currentTarget.innerText = "Download PNG";
+            target.innerText = "Download PNG";
           }
         }
       });

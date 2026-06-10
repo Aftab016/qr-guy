@@ -549,113 +549,114 @@
 
 <script>
   import { PRESET_SVGS } from '../utils/presets';
+  import type { default as QRCodeStylingType } from 'qr-code-styling';
   
   // Use dynamic imports to prevent SSR bundling failures in Astro
-  let QRCodeStyling;
+  let QRCodeStyling: typeof QRCodeStylingType;
 
   // Cache elements
-  const elWrapper = document.getElementById('qr-preview-wrapper');
-  const elLoading = document.getElementById('qr-loading');
-  const elToast = document.getElementById('toast-message');
-  const elToastText = document.getElementById('toast-text');
+  const elWrapper = document.getElementById('qr-preview-wrapper') as HTMLElement;
+  const elLoading = document.getElementById('qr-loading') as HTMLElement;
+  const elToast = document.getElementById('toast-message') as HTMLElement;
+  const elToastText = document.getElementById('toast-text') as HTMLElement;
 
   // Input elements
-  const elUrl = document.getElementById('input-url');
-  const elPhone = document.getElementById('input-phone');
-  const elPhoneAction = document.getElementById('input-phone-action');
-  const elSmsBodyContainer = document.getElementById('sms-body-container');
-  const elSmsBody = document.getElementById('input-sms-body');
-  const elCode = document.getElementById('input-code');
+  const elUrl = document.getElementById('input-url') as HTMLInputElement;
+  const elPhone = document.getElementById('input-phone') as HTMLInputElement;
+  const elPhoneAction = document.getElementById('input-phone-action') as HTMLSelectElement;
+  const elSmsBodyContainer = document.getElementById('sms-body-container') as HTMLElement;
+  const elSmsBody = document.getElementById('input-sms-body') as HTMLTextAreaElement;
+  const elCode = document.getElementById('input-code') as HTMLTextAreaElement;
 
   // Accordion parameters
-  const elFgSolid = document.getElementById('btn-fg-solid');
-  const elFgGradient = document.getElementById('btn-fg-gradient');
-  const elFgSolidContainer = document.getElementById('fg-solid-container');
-  const elFgGradientContainer = document.getElementById('fg-gradient-container');
+  const elFgSolid = document.getElementById('btn-fg-solid') as HTMLButtonElement;
+  const elFgGradient = document.getElementById('btn-fg-gradient') as HTMLButtonElement;
+  const elFgSolidContainer = document.getElementById('fg-solid-container') as HTMLElement;
+  const elFgGradientContainer = document.getElementById('fg-gradient-container') as HTMLElement;
 
-  const elColorFg = document.getElementById('color-fg');
-  const elColorFgText = document.getElementById('color-fg-text');
-  const elColorBg = document.getElementById('color-bg');
-  const elColorBgText = document.getElementById('color-bg-text');
-  const elBgTransparent = document.getElementById('bg-transparent');
+  const elColorFg = document.getElementById('color-fg') as HTMLInputElement;
+  const elColorFgText = document.getElementById('color-fg-text') as HTMLInputElement;
+  const elColorBg = document.getElementById('color-bg') as HTMLInputElement;
+  const elColorBgText = document.getElementById('color-bg-text') as HTMLInputElement;
+  const elBgTransparent = document.getElementById('bg-transparent') as HTMLInputElement;
 
-  const elGradStart = document.getElementById('color-grad-start');
-  const elGradStartText = document.getElementById('color-grad-start-text');
-  const elGradEnd = document.getElementById('color-grad-end');
-  const elGradEndText = document.getElementById('color-grad-end-text');
-  const elGradType = document.getElementById('grad-type');
-  const elGradAngle = document.getElementById('grad-angle');
+  const elGradStart = document.getElementById('color-grad-start') as HTMLInputElement;
+  const elGradStartText = document.getElementById('color-grad-start-text') as HTMLInputElement;
+  const elGradEnd = document.getElementById('color-grad-end') as HTMLInputElement;
+  const elGradEndText = document.getElementById('color-grad-end-text') as HTMLInputElement;
+  const elGradType = document.getElementById('grad-type') as HTMLSelectElement;
+  const elGradAngle = document.getElementById('grad-angle') as HTMLInputElement;
 
-  const elEyeColorOverride = document.getElementById('eye-color-override');
-  const elEyeColorsContainer = document.getElementById('eye-colors-container');
-  const elColorEyeFrame = document.getElementById('color-eye-frame');
-  const elColorEyeFrameText = document.getElementById('color-eye-frame-text');
-  const elColorEyeBall = document.getElementById('color-eye-ball');
-  const elColorEyeBallText = document.getElementById('color-eye-ball-text');
+  const elEyeColorOverride = document.getElementById('eye-color-override') as HTMLInputElement;
+  const elEyeColorsContainer = document.getElementById('eye-colors-container') as HTMLElement;
+  const elColorEyeFrame = document.getElementById('color-eye-frame') as HTMLInputElement;
+  const elColorEyeFrameText = document.getElementById('color-eye-frame-text') as HTMLInputElement;
+  const elColorEyeBall = document.getElementById('color-eye-ball') as HTMLInputElement;
+  const elColorEyeBallText = document.getElementById('color-eye-ball-text') as HTMLInputElement;
 
   // Shapes
-  const elShapeDots = document.getElementById('shape-dots');
-  const elShapeEyeFrame = document.getElementById('shape-eye-frame');
-  const elShapeEyeBall = document.getElementById('shape-eye-ball');
+  const elShapeDots = document.getElementById('shape-dots') as HTMLSelectElement;
+  const elShapeEyeFrame = document.getElementById('shape-eye-frame') as HTMLSelectElement;
+  const elShapeEyeBall = document.getElementById('shape-eye-ball') as HTMLSelectElement;
 
   // Logo Settings
-  const elLogoUpload = document.getElementById('logo-upload');
-  const elLogoPreset = document.getElementById('logo-preset');
-  const elLogoSettings = document.getElementById('logo-settings-panel');
-  const elLogoSize = document.getElementById('logo-size');
-  const elLogoMargin = document.getElementById('logo-margin');
-  const elLogoBgClean = document.getElementById('logo-bg-clean');
+  const elLogoUpload = document.getElementById('logo-upload') as HTMLInputElement;
+  const elLogoPreset = document.getElementById('logo-preset') as HTMLSelectElement;
+  const elLogoSettings = document.getElementById('logo-settings-panel') as HTMLElement;
+  const elLogoSize = document.getElementById('logo-size') as HTMLInputElement;
+  const elLogoMargin = document.getElementById('logo-margin') as HTMLInputElement;
+  const elLogoBgClean = document.getElementById('logo-bg-clean') as HTMLInputElement;
   
-  const elLblLogoSize = document.getElementById('lbl-logo-size');
-  const elLblLogoMargin = document.getElementById('lbl-logo-margin');
+  const elLblLogoSize = document.getElementById('lbl-logo-size') as HTMLElement;
+  const elLblLogoMargin = document.getElementById('lbl-logo-margin') as HTMLElement;
 
   // Advanced settings
-  const elQrEcl = document.getElementById('qr-ecl');
-  const elQrResolution = document.getElementById('qr-resolution');
-  const elQrMargin = document.getElementById('qr-margin');
+  const elQrEcl = document.getElementById('qr-ecl') as HTMLSelectElement;
+  const elQrResolution = document.getElementById('qr-resolution') as HTMLInputElement;
+  const elQrMargin = document.getElementById('qr-margin') as HTMLInputElement;
   
-  const elLblQrResolution = document.getElementById('lbl-qr-resolution');
-  const elLblQrMargin = document.getElementById('lbl-qr-margin');
+  const elLblQrResolution = document.getElementById('lbl-qr-resolution') as HTMLElement;
+  const elLblQrMargin = document.getElementById('lbl-qr-margin') as HTMLElement;
 
   // Preview Info
-  const elInfoRes = document.getElementById('render-info-res');
-  const elInfoEcl = document.getElementById('render-info-ecl');
+  const elInfoRes = document.getElementById('render-info-res') as HTMLElement;
+  const elInfoEcl = document.getElementById('render-info-ecl') as HTMLElement;
 
   // Download / copy buttons
-  const elDlPng = document.getElementById('btn-download-png');
-  const elDlSvg = document.getElementById('btn-download-svg');
-  const elDlJpeg = document.getElementById('btn-download-jpeg');
-  const elCopySvg = document.getElementById('btn-copy-svg');
-  const elCopyPng = document.getElementById('btn-copy-png');
+  const elDlPng = document.getElementById('btn-download-png') as HTMLButtonElement;
+  const elDlSvg = document.getElementById('btn-download-svg') as HTMLButtonElement;
+  const elDlJpeg = document.getElementById('btn-download-jpeg') as HTMLButtonElement;
+  const elCopySvg = document.getElementById('btn-copy-svg') as HTMLButtonElement;
+  const elCopyPng = document.getElementById('btn-copy-png') as HTMLButtonElement;
 
   // Method buttons & panes
-  const methodTabs = document.querySelectorAll('.method-tab-btn');
-  const methodPanes = document.querySelectorAll('.method-pane');
+  const methodTabs = document.querySelectorAll('.method-tab-btn') as NodeListOf<HTMLButtonElement>;
+  const methodPanes = document.querySelectorAll('.method-pane') as NodeListOf<HTMLElement>;
   let currentMethod = 'url'; // 'url', 'phone', 'code'
 
   // Code templates
-  const btnTplRaw = document.getElementById('tpl-raw');
-  const btnTplWifi = document.getElementById('tpl-wifi');
-  const btnTplVcard = document.getElementById('tpl-vcard');
-  const helperWifi = document.getElementById('helper-wifi-panel');
-  const helperVcard = document.getElementById('helper-vcard-panel');
+  const btnTplRaw = document.getElementById('tpl-raw') as HTMLButtonElement;
+  const btnTplWifi = document.getElementById('tpl-wifi') as HTMLButtonElement;
+  const btnTplVcard = document.getElementById('tpl-vcard') as HTMLButtonElement;
+  const helperWifi = document.getElementById('helper-wifi-panel') as HTMLElement;
+  const helperVcard = document.getElementById('helper-vcard-panel') as HTMLElement;
 
   // Wi-Fi inputs
-  const elWifiSsid = document.getElementById('wifi-ssid');
-  const elWifiPass = document.getElementById('wifi-pass');
-  const elWifiType = document.getElementById('wifi-type');
+  const elWifiSsid = document.getElementById('wifi-ssid') as HTMLInputElement;
+  const elWifiPass = document.getElementById('wifi-pass') as HTMLInputElement;
+  const elWifiType = document.getElementById('wifi-type') as HTMLSelectElement;
 
   // VCard inputs
-  const elVcardName = document.getElementById('vcard-name');
-  const elVcardPhone = document.getElementById('vcard-phone');
-  const elVcardEmail = document.getElementById('vcard-email');
-  const elVcardOrg = document.getElementById('vcard-org');
+  const elVcardName = document.getElementById('vcard-name') as HTMLInputElement;
+  const elVcardPhone = document.getElementById('vcard-phone') as HTMLInputElement;
+  const elVcardEmail = document.getElementById('vcard-email') as HTMLInputElement;
+  const elVcardOrg = document.getElementById('vcard-org') as HTMLInputElement;
 
   // App State Variables
   let isGradient = false;
   let customLogoDataUrl = '';
-  let qrEngineInstance = null;
-  let generateTimeout = null;
+  let qrEngineInstance: QRCodeStylingType | null = null;
+  let generateTimeout: any = null;
 
   // Initialize client dependencies
   async function initApp() {
@@ -968,7 +969,7 @@
   }
 
   // Link pickers
-  function bindColorPicker(picker, textEl) {
+  function bindColorPicker(picker: HTMLInputElement, textEl: HTMLInputElement) {
     picker.addEventListener('input', () => {
       textEl.value = picker.value.toUpperCase();
       triggerGenerate();
@@ -986,7 +987,7 @@
   }
 
   // Helper Switch Methods
-  function switchMethod(method) {
+  function switchMethod(method: string) {
     currentMethod = method;
     methodTabs.forEach(btn => {
       btn.classList.remove('border-primary', 'text-ink');
@@ -995,23 +996,29 @@
     methodPanes.forEach(pane => pane.classList.add('hidden'));
 
     if (method === 'url') {
-      document.getElementById('btn-method-url').classList.add('border-primary', 'text-ink');
-      document.getElementById('btn-method-url').classList.remove('border-transparent', 'text-body');
-      document.getElementById('method-url-pane').classList.remove('hidden');
+      const btn = document.getElementById('btn-method-url') as HTMLElement;
+      btn.classList.add('border-primary', 'text-ink');
+      btn.classList.remove('border-transparent', 'text-body');
+      const pane = document.getElementById('method-url-pane') as HTMLElement;
+      pane.classList.remove('hidden');
     } else if (method === 'phone') {
-      document.getElementById('btn-method-phone').classList.add('border-primary', 'text-ink');
-      document.getElementById('btn-method-phone').classList.remove('border-transparent', 'text-body');
-      document.getElementById('method-phone-pane').classList.remove('hidden');
+      const btn = document.getElementById('btn-method-phone') as HTMLElement;
+      btn.classList.add('border-primary', 'text-ink');
+      btn.classList.remove('border-transparent', 'text-body');
+      const pane = document.getElementById('method-phone-pane') as HTMLElement;
+      pane.classList.remove('hidden');
     } else if (method === 'code') {
-      document.getElementById('btn-method-code').classList.add('border-primary', 'text-ink');
-      document.getElementById('btn-method-code').classList.remove('border-transparent', 'text-body');
-      document.getElementById('method-code-pane').classList.remove('hidden');
+      const btn = document.getElementById('btn-method-code') as HTMLElement;
+      btn.classList.add('border-primary', 'text-ink');
+      btn.classList.remove('border-transparent', 'text-body');
+      const pane = document.getElementById('method-code-pane') as HTMLElement;
+      pane.classList.remove('hidden');
     }
     triggerGenerate();
   }
 
   // Switch Code templates
-  function selectTemplate(tpl) {
+  function selectTemplate(tpl: string) {
     btnTplRaw.classList.remove('border-primary', 'bg-primary', 'text-on-primary');
     btnTplWifi.classList.remove('border-primary', 'bg-primary', 'text-on-primary');
     btnTplVcard.classList.remove('border-primary', 'bg-primary', 'text-on-primary');
@@ -1074,7 +1081,7 @@ END:VCARD`;
   }
 
   // Set Foreground color style
-  function setFgStyle(style) {
+  function setFgStyle(style: string) {
     if (style === 'solid') {
       isGradient = false;
       elFgSolid.classList.add('bg-canvas', 'border', 'border-hairline', 'text-ink');
@@ -1098,14 +1105,15 @@ END:VCARD`;
   }
 
   // Handle Logo uploading
-  function handleLogoUpload(e) {
-    const file = e.target.files[0];
+  function handleLogoUpload() {
+    const files = elLogoUpload.files;
+    const file = files ? files[0] : null;
     if (file) {
       // Force preset select to none
       elLogoPreset.value = 'none';
       const reader = new FileReader();
       reader.onload = (event) => {
-        customLogoDataUrl = event.target.result;
+        customLogoDataUrl = event.target?.result as string;
         elLogoSettings.classList.remove('hidden');
         
         // Auto force High ECL for logos
@@ -1150,7 +1158,7 @@ END:VCARD`;
   }
 
   // Preset Applicator
-  function applyPreset(presetName) {
+  function applyPreset(presetName: string) {
     // Reset active border
     document.querySelectorAll('[data-preset]').forEach(btn => {
       btn.classList.remove('border-primary', 'text-ink');
@@ -1429,7 +1437,7 @@ END:VCARD`;
   }
 
   // Save Config Cache
-  function saveToConfigCache(opts) {
+  function saveToConfigCache(opts: any) {
     const cache = {
       data: opts.data,
       size: parseInt(elQrResolution.value),
@@ -1458,11 +1466,11 @@ END:VCARD`;
   }
 
   // Debounced auto history saver
-  let historyDebounce = null;
-  function saveToHistoryLog(opts) {
+  let historyDebounce: any = null;
+  function saveToHistoryLog(opts: any) {
     if (historyDebounce) clearTimeout(historyDebounce);
     historyDebounce = setTimeout(() => {
-      let history = [];
+      let history: any[] = [];
       try {
         history = JSON.parse(localStorage.getItem('qrguy_history') || '[]');
       } catch(e) {}
@@ -1499,7 +1507,7 @@ END:VCARD`;
   }
 
   // File Download Triggers
-  async function downloadQR(format) {
+  async function downloadQR(format: 'png' | 'svg' | 'jpeg') {
     if (!QRCodeStyling) return;
     
     try {
@@ -1579,7 +1587,7 @@ END:VCARD`;
   }
 
   // Toast Alerts Trigger
-  function showToast(text, isError = false) {
+  function showToast(text: string, isError = false) {
     elToastText.innerText = text;
     
     // Apply styling

@@ -130,35 +130,38 @@
 </div>
 
 <script>
-  let Html5Qrcode;
-  let html5QrCodeInstance = null;
+  import type { Html5Qrcode as Html5QrcodeType } from 'html5-qrcode';
+
+  let Html5QrcodeClass: typeof Html5QrcodeType;
+  let html5QrCodeInstance: Html5QrcodeType | null = null;
   let isCameraActive = false;
   
   // Element Cache
-  const tabScanner = document.getElementById('tab-scanner');
-  const btnScanFile = document.getElementById('btn-scan-file');
-  const btnScanCamera = document.getElementById('btn-scan-camera');
+  const tabScanner = document.getElementById('tab-scanner') as HTMLElement;
+  const btnScanFile = document.getElementById('btn-scan-file') as HTMLButtonElement;
+  const btnScanCamera = document.getElementById('btn-scan-camera') as HTMLButtonElement;
   
-  const paneFile = document.getElementById('scan-file-container');
-  const paneCamera = document.getElementById('scan-camera-container');
+  const paneFile = document.getElementById('scan-file-container') as HTMLElement;
+  const paneCamera = document.getElementById('scan-camera-container') as HTMLElement;
   
-  const dropzone = document.getElementById('dropzone');
-  const fileInput = document.getElementById('scan-file-input');
+  const dropzone = document.getElementById('dropzone') as HTMLElement;
+  const fileInput = document.getElementById('scan-file-input') as HTMLInputElement;
   
-  const camToggle = document.getElementById('btn-camera-toggle');
-  const camLoading = document.getElementById('camera-loading');
-  const camHud = document.getElementById('camera-hud');
+  const camToggle = document.getElementById('btn-camera-toggle') as HTMLButtonElement;
+  const camLoading = document.getElementById('camera-loading') as HTMLElement;
+  const camHud = document.getElementById('camera-hud') as HTMLElement;
   
-  const resultCard = document.getElementById('scan-result-card');
-  const resultText = document.getElementById('decoded-content');
-  const btnClearResult = document.getElementById('btn-clear-result');
-  const btnCopyScanned = document.getElementById('btn-copy-scanned');
-  const btnVisitScanned = document.getElementById('btn-visit-scanned');
-  const btnImportScanned = document.getElementById('btn-import-scanned');
+  const resultCard = document.getElementById('scan-result-card') as HTMLElement;
+  const resultText = document.getElementById('decoded-content') as HTMLElement;
+  const btnClearResult = document.getElementById('btn-clear-result') as HTMLButtonElement;
+  const btnCopyScanned = document.getElementById('btn-copy-scanned') as HTMLButtonElement;
+  const btnVisitScanned = document.getElementById('btn-visit-scanned') as HTMLAnchorElement;
+  const btnImportScanned = document.getElementById('btn-import-scanned') as HTMLButtonElement;
 
   // Trigger init on tab change
-  window.addEventListener('tab-change', (e) => {
-    const activeTab = e.detail.tab;
+  window.addEventListener('tab-change', (e: Event) => {
+    const customEvent = e as CustomEvent<{ tab: string }>;
+    const activeTab = customEvent.detail.tab;
     if (activeTab === 'scanner') {
       tabScanner.classList.remove('hidden');
       initScannerEngine();
@@ -170,18 +173,19 @@
 
   // Load html5-qrcode
   async function initScannerEngine() {
-    if (Html5Qrcode) return;
+    if (html5QrCodeInstance) return;
     try {
       const module = await import('html5-qrcode');
-      Html5Qrcode = module.Html5Qrcode;
+      Html5QrcodeClass = module.Html5Qrcode;
       
       // Setup hidden mount
       const mount = document.createElement('div');
       mount.id = 'scanner-mount';
       mount.className = 'w-full h-full';
-      document.getElementById('camera-preview-box').appendChild(mount);
+      const previewBox = document.getElementById('camera-preview-box') as HTMLElement;
+      previewBox.appendChild(mount);
       
-      html5QrCodeInstance = new Html5Qrcode('scanner-mount');
+      html5QrCodeInstance = new Html5QrcodeClass('scanner-mount');
       camLoading.classList.add('hidden');
       bindScannerEvents();
     } catch (err) {
@@ -222,15 +226,15 @@
     dropzone.addEventListener('drop', (e) => {
       e.preventDefault();
       dropzone.classList.remove('border-primary', 'bg-canvas-soft-2');
-      const files = e.dataTransfer.files;
-      if (files.length > 0) {
+      const files = e.dataTransfer?.files;
+      if (files && files.length > 0) {
         handleFileScan(files[0]);
       }
     });
 
-    fileInput.addEventListener('change', (e) => {
-      const files = e.target.files;
-      if (files.length > 0) {
+    fileInput.addEventListener('change', () => {
+      const files = fileInput.files;
+      if (files && files.length > 0) {
         handleFileScan(files[0]);
       }
     });
@@ -261,7 +265,7 @@
       if (!content) return;
 
       // Access latest config storage and overwrite data
-      let latestConfig = {};
+      let latestConfig: any = {};
       try {
         latestConfig = JSON.parse(localStorage.getItem('qrguy_latest_config') || '{}');
       } catch (e) {}
@@ -277,13 +281,13 @@
   }
 
   // Handle uploaded file decoding
-  function handleFileScan(file) {
+  function handleFileScan(file: File) {
     if (!html5QrCodeInstance) return;
     
     resultCard.classList.add('hidden');
     
     html5QrCodeInstance.scanFileV2(file, true)
-      .then(html5qrcodeResult => {
+      .then((html5qrcodeResult: any) => {
         const decodedText = html5qrcodeResult.decodedText;
         const formatName = html5qrcodeResult.result?.format?.formatName || 'Unknown';
         showScannedResult(decodedText, false, formatName);
@@ -309,13 +313,13 @@
         await html5QrCodeInstance.start(
           { facingMode: "environment" },
           { fps: 15, qrbox: { width: 280, height: 180 } },
-          (decodedText, decodedResult) => {
+          (decodedText: string, decodedResult: any) => {
             const formatName = decodedResult.result?.format?.formatName || 'Unknown';
             showScannedResult(decodedText, false, formatName);
             // Flash a beep or stop camera on first successful scan
             stopCameraScanner();
           },
-          (errorMessage) => {
+          () => {
             // Keep scanning silently
           }
         );
@@ -350,7 +354,7 @@
   }
 
   // Presentation scanned outputs
-  function showScannedResult(text, isError = false, formatName = '') {
+  function showScannedResult(text: string, isError = false, formatName = '') {
     resultText.innerText = text;
     resultCard.classList.remove('hidden');
 

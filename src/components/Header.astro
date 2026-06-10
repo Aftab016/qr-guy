@@ -117,7 +117,7 @@
 
 <script>
   // Client-side theme toggling
-  const themeToggle = document.getElementById('theme-toggle');
+  const themeToggle = document.getElementById('theme-toggle') as HTMLButtonElement | null;
   if (themeToggle) {
     themeToggle.addEventListener('click', () => {
       const isDark = document.documentElement.classList.toggle('dark');
@@ -126,7 +126,7 @@
   }
 
   // Handle active navigation styling dynamically (SPA behavior)
-  const tabButtons = document.querySelectorAll('.nav-tab-btn');
+  const tabButtons = document.querySelectorAll('.nav-tab-btn') as NodeListOf<HTMLButtonElement>;
   
   // Set tab active function
   window.addEventListener('hashchange', updateActiveTab);
@@ -161,13 +161,13 @@
   });
 
   // Start Generating button handler
-  const startBtn = document.querySelector('[data-action="start-generating"]');
+  const startBtn = document.querySelector('[data-action="start-generating"]') as HTMLButtonElement | null;
   if (startBtn) {
     startBtn.addEventListener('click', () => {
       window.location.hash = '#generator';
     });
   }
-
+  
   // Initialize on first load
   updateActiveTab();
 </script>

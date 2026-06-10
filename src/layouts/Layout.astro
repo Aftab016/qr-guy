@@ -2,11 +2,15 @@
 interface Props {
 	title?: string;
 	description?: string;
+	canonicalUrl?: string;
+	ogImage?: string;
 }
 
 const { 
-	title = "QR Guy — Create Premium Styled QR Codes", 
-	description = "Create highly customizable, premium QR codes with custom shapes, linear/radial gradients, custom logos, and presets. 100% client-side, free, and private." 
+	title = "QR Guy — Free QR Maker & Barcode Maker Online (qrguy)", 
+	description = "Create and scan QR codes & barcodes online. QR Guy is a free qr maker and barcode maker (UPC, 2D) that runs 100% client-side and offline-ready. Customize shapes, gradients, and logos.",
+	canonicalUrl = "https://qrguy.com",
+	ogImage = "https://qrguy.com/og-image.png"
 } = Astro.props;
 
 import "../styles/global.css";
@@ -21,8 +25,53 @@ import "../styles/global.css";
 		<!-- SEO Meta Tags -->
 		<title>{title}</title>
 		<meta name="description" content={description} />
+		<meta name="keywords" content="qrguy, qr maker, qr maker free, free qr maker, qr maker online, adobe qr maker, qr maker google, google qr maker, canva qr maker, qr gen, barcode maker, barcode maker online, qr barcode maker, free qr barcode maker, upc barcode maker, free barcode maker, online barcode maker, barcode maker software, barcode maker pro, barcode scanner, handheld barcode scanner, barcode scanner app, free barcode scanner, barcode scanner online, 2d barcode scanner, walmart barcode scanner, amazon barcode scanner, online barcode scanner, zebra barcode scanner, qr guy, qr guys, qr boy" />
 		<meta name="robots" content="index, follow" />
-		<link rel="canonical" href="https://qrguy.com" />
+		<link rel="canonical" href={canonicalUrl} />
+		
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={canonicalUrl} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={ogImage} />
+		<meta property="og:site_name" content="QR Guy" />
+		<meta property="og:locale" content="en_US" />
+
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary_large_image" />
+		<meta property="twitter:url" content={canonicalUrl} />
+		<meta property="twitter:title" content={title} />
+		<meta property="twitter:description" content={description} />
+		<meta property="twitter:image" content={ogImage} />
+
+		<!-- Schema.org JSON-LD Structured Data -->
+		<script type="application/ld+json" is:inline>
+			{
+				"@context": "https://schema.org",
+				"@type": "WebApplication",
+				"name": "QR Guy",
+				"alternateName": ["qrguy", "qr guy", "qr guys", "qr boy"],
+				"url": "https://qrguy.com",
+				"description": "Create and scan QR codes & barcodes online. QR Guy is a free qr maker and barcode maker (UPC, 2D) that runs 100% client-side and offline-ready. Customize shapes, gradients, and logos.",
+				"applicationCategory": "UtilityApplication",
+				"operatingSystem": "All",
+				"browserRequirements": "Requires JavaScript. Requires HTML5.",
+				"offers": {
+					"@type": "Offer",
+					"price": "0",
+					"priceCurrency": "USD"
+				},
+				"featureList": [
+					"Free QR Maker",
+					"Free Barcode Maker (UPC, Code 128, etc.)",
+					"Online Barcode Scanner & App",
+					"Custom shape and gradient options",
+					"Logo embedding on QR codes",
+					"100% client-side execution"
+				]
+			}
+		</script>
 		
 		<!-- Favicon -->
 		<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />

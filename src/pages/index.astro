@@ -6,12 +6,13 @@ import GeneratorTab from '../components/GeneratorTab.astro';
 import ScannerTab from '../components/ScannerTab.astro';
 import HistoryTab from '../components/HistoryTab.astro';
 import DevTab from '../components/DevTab.astro';
+import SeoContent from '../components/SeoContent.astro';
 import Footer from '../components/Footer.astro';
 ---
 
 <Layout 
-	title="QR Guy — Create Premium Branded QR Codes" 
-	description="Integrate custom shapes, gradients, and logos in your QR codes. 100% free and client-side, with full SVG exports and built-in scanning tools."
+	title="QR Guy — Free QR Maker & Barcode Maker Online (qrguy)" 
+	description="Create and scan QR codes & barcodes online. QR Guy is a free qr maker and barcode maker (UPC, 2D) that runs 100% client-side and offline-ready. Customize shapes, gradients, and logos."
 >
 	<!-- Navigation header -->
 	<Header />
@@ -28,6 +29,9 @@ import Footer from '../components/Footer.astro';
 		<HistoryTab />
 		<DevTab />
 	</main>
+
+	<!-- SEO optimized documentation copy -->
+	<SeoContent />
 
 	<!-- Footer -->
 	<Footer />

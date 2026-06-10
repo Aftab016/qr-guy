@@ -44,3 +44,11 @@ Inside of this Astro project, the codebase is organized as follows:
 │   └── pages/        # File-based routing (pages and API endpoints)
 ├── package.json      # Dependencies and scripts
 └── astro.config.mjs  # Astro configuration file
+
+## 🛠️ Tech Stack
+
+* **Framework:** [Astro](https://astro.build/)
+* **Styling:** Tailwind CSS
+* **Deployment:** Vercel
+
+*(Note: Replace Tailwind or Vercel with what you are actually using, and you are good to go!)*

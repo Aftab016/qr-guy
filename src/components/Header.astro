@@ -5,7 +5,7 @@
   <div class="h-16 flex items-center justify-between px-6 md:px-8 max-w-[1400px] mx-auto w-full">
     <!-- Left: Logo -->
     <div class="flex items-center gap-3">
-      <a href="/" class="flex items-center gap-2.5 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/20 rounded-md p-1 -m-1" aria-label="QR Guy Home">
+      <a href="/qr-guy.com/" class="flex items-center gap-2.5 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink/20 rounded-md p-1 -m-1" aria-label="QR Guy Home">
         <!-- QR Guy Logo -->
         <div class="relative w-7 h-7 flex items-center justify-center text-ink group-hover:scale-105 transition-transform">
           <svg viewBox="0 0 100 100" class="w-6 h-6 fill-current" aria-hidden="true">
@@ -132,7 +132,7 @@
   window.addEventListener('hashchange', updateActiveTab);
   
   function updateActiveTab() {
-    const isHome = window.location.pathname === '/' || window.location.pathname === '/index.html' || window.location.pathname === '';
+    const isHome = window.location.pathname === '/' || window.location.pathname === '/index.html' || window.location.pathname === '' || window.location.pathname === '/qr-guy.com/';
     const hash = window.location.hash.replace('#', '') || (isHome ? 'generator' : '');
     
     tabButtons.forEach(btn => {

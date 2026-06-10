@@ -74,14 +74,14 @@
   </div>
 
   <!-- Bottom Deck: Sub-Navigation -->
-  <div class="border-t border-hairline w-full bg-canvas/30">
-    <div class="max-w-[1400px] mx-auto px-6 md:px-8 flex items-center justify-between overflow-x-auto scrollbar-none">
-      <nav class="flex gap-6 h-12 items-center" aria-label="Main Navigation" role="tablist">
+  <div class="border-t border-hairline w-full bg-canvas/30 py-2">
+    <div class="max-w-[1400px] mx-auto px-6 md:px-8 flex items-center overflow-x-auto scrollbar-none">
+      <nav class="flex p-1 bg-canvas-soft-2 border border-hairline rounded-lg gap-1" aria-label="Main Navigation" role="tablist">
         <button 
           data-tab-btn="generator" 
           role="tab"
           aria-selected="true"
-          class="nav-tab-btn h-full border-b-2 border-primary text-ink px-1 text-sm font-medium transition-[border-color,color] duration-200 ease-in-out cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 rounded-sm -mb-[1px]"
+          class="nav-tab-btn px-4 py-1.5 text-xs sm:text-sm font-medium rounded-md bg-canvas border border-hairline shadow-level-2 text-ink transition-all duration-200 ease-in-out cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20"
         >
           Generator
         </button>
@@ -89,7 +89,7 @@
           data-tab-btn="scanner" 
           role="tab"
           aria-selected="false"
-          class="nav-tab-btn h-full border-b-2 border-transparent text-body hover:text-ink px-1 text-sm font-medium transition-[border-color,color] duration-200 ease-in-out cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 rounded-sm -mb-[1px]"
+          class="nav-tab-btn px-4 py-1.5 text-xs sm:text-sm font-medium rounded-md bg-transparent border border-transparent text-body hover:text-ink hover:bg-canvas/50 transition-all duration-200 ease-in-out cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20"
         >
           Scanner
         </button>
@@ -97,7 +97,7 @@
           data-tab-btn="history" 
           role="tab"
           aria-selected="false"
-          class="nav-tab-btn h-full border-b-2 border-transparent text-body hover:text-ink px-1 text-sm font-medium transition-[border-color,color] duration-200 ease-in-out cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 rounded-sm -mb-[1px] flex items-center gap-1.5"
+          class="nav-tab-btn px-4 py-1.5 text-xs sm:text-sm font-medium rounded-md bg-transparent border border-transparent text-body hover:text-ink hover:bg-canvas/50 transition-all duration-200 ease-in-out cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 flex items-center gap-1.5"
         >
           <span>History</span>
           <span id="history-badge" class="hidden px-2 py-0.5 text-[10px] font-semibold bg-canvas-soft border border-hairline text-ink rounded-full">0</span>
@@ -106,7 +106,7 @@
           data-tab-btn="developer" 
           role="tab"
           aria-selected="false"
-          class="nav-tab-btn h-full border-b-2 border-transparent text-body hover:text-ink px-1 text-sm font-medium transition-[border-color,color] duration-200 ease-in-out cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 rounded-sm -mb-[1px]"
+          class="nav-tab-btn px-4 py-1.5 text-xs sm:text-sm font-medium rounded-md bg-transparent border border-transparent text-body hover:text-ink hover:bg-canvas/50 transition-all duration-200 ease-in-out cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20"
         >
           Developer API
         </button>
@@ -137,12 +137,12 @@
     tabButtons.forEach(btn => {
       const btnTab = btn.getAttribute('data-tab-btn');
       if (btnTab === hash) {
-        btn.classList.add('border-primary', 'text-ink');
-        btn.classList.remove('border-transparent', 'text-body');
+        btn.classList.add('bg-canvas', 'border-hairline', 'shadow-level-2', 'text-ink');
+        btn.classList.remove('bg-transparent', 'border-transparent', 'text-body', 'hover:bg-canvas/50');
         btn.setAttribute('aria-selected', 'true');
       } else {
-        btn.classList.remove('border-primary', 'text-ink');
-        btn.classList.add('border-transparent', 'text-body');
+        btn.classList.remove('bg-canvas', 'border-hairline', 'shadow-level-2', 'text-ink');
+        btn.classList.add('bg-transparent', 'border-transparent', 'text-body', 'hover:bg-canvas/50');
         btn.setAttribute('aria-selected', 'false');
       }
     });

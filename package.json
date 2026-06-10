@@ -12,6 +12,7 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/sitemap": "^3.7.3",
     "astro": "^6.4.5",
     "html5-qrcode": "^2.3.8",
     "qr-code-styling": "^1.9.2"

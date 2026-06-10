@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://qrguy.com/sitemap-index.xml

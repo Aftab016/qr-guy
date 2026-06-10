@@ -1,17 +1,28 @@
 ---
 ---
+<style>
+  @keyframes laser-scan {
+    0% { top: 0%; }
+    50% { top: 100%; }
+    100% { top: 0%; }
+  }
+  .laser-line {
+    animation: laser-scan 3s infinite ease-in-out;
+  }
+</style>
+
 <div id="tab-scanner" class="w-full max-w-[960px] mx-auto py-8 px-6 md:px-8 font-sans hidden">
   <div class="bg-canvas border border-hairline rounded-lg shadow-level-3 p-6 md:p-8">
     <div class="max-w-xl mx-auto flex flex-col items-center">
-      <h2 class="text-xs font-mono font-medium text-mute uppercase tracking-wider mb-2">QR Code Decoder</h2>
-      <h3 class="font-sans font-semibold text-xl md:text-2xl text-ink tracking-tight mb-6 text-center">Scan from file or device camera</h3>
+      <h2 class="text-xs font-mono font-medium text-mute uppercase tracking-wider mb-2">QR & Barcode Scanner</h2>
+      <h3 class="font-sans font-semibold text-xl md:text-2xl text-ink tracking-tight mb-6 text-center">Scan QR codes or barcodes from file or camera</h3>
       
       <!-- Selection Tabs: File vs Camera -->
-      <div class="flex p-0.5 bg-canvas-soft-2 border border-hairline rounded-sm w-full mb-6">
-        <button id="btn-scan-file" class="flex-1 py-2 text-xs font-medium bg-canvas border border-hairline text-ink rounded-sm focus:outline-none cursor-pointer">
+      <div class="flex p-0.5 bg-canvas-soft-2 border border-hairline rounded-md w-full mb-6">
+        <button id="btn-scan-file" class="flex-1 py-2 text-xs font-medium bg-canvas border border-hairline text-ink rounded-md focus:outline-none cursor-pointer">
           Upload Image File
         </button>
-        <button id="btn-scan-camera" class="flex-1 py-2 text-xs font-medium text-body hover:text-ink rounded-sm focus:outline-none cursor-pointer">
+        <button id="btn-scan-camera" class="flex-1 py-2 text-xs font-medium text-body hover:text-ink rounded-md focus:outline-none cursor-pointer">
           Use Live Camera
         </button>
       </div>
@@ -26,7 +37,7 @@
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 text-mute mb-3">
             <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375 0 11-.75 0 .375 0 01.75 0z" />
           </svg>
-          <span class="text-sm font-semibold text-ink mb-1">Drag and drop your QR code image</span>
+          <span class="text-sm font-semibold text-ink mb-1">Drag and drop your QR code or barcode image</span>
           <span class="text-xs text-mute">or click to browse from files</span>
         </div>
       </div>
@@ -39,14 +50,14 @@
           
           <!-- Scan HUD Overlay -->
           <div id="camera-hud" class="absolute inset-0 border-[40px] border-black/40 flex items-center justify-center pointer-events-none hidden">
-            <div class="w-48 h-48 border-2 border-link rounded-lg relative">
+            <div class="w-[280px] h-[180px] border-2 border-link rounded-lg relative">
               <!-- Corner brackets decoration -->
               <span class="absolute top-0 left-0 w-4 h-4 border-t-4 border-l-4 border-cyan translate-x-[-2px] translate-y-[-2px]"></span>
               <span class="absolute top-0 right-0 w-4 h-4 border-t-4 border-r-4 border-cyan translate-x-[2px] translate-y-[-2px]"></span>
               <span class="absolute bottom-0 left-0 w-4 h-4 border-b-4 border-l-4 border-cyan translate-x-[-2px] translate-y-[2px]"></span>
               <span class="absolute bottom-0 right-0 w-4 h-4 border-b-4 border-r-4 border-cyan translate-x-[2px] translate-y-[2px]"></span>
-              <!-- Red scanning line animation -->
-              <span class="absolute left-0 top-0 w-full h-0.5 bg-red-500 shadow-[0_0_10px_#ef4444] animate-bounce"></span>
+              <!-- Premium Red laser scanning line animation -->
+              <span class="absolute left-0 top-0 w-full h-0.5 bg-red-500 shadow-[0_0_10px_#ef4444] laser-line"></span>
             </div>
           </div>
 
@@ -62,7 +73,7 @@
 
         <button 
           id="btn-camera-toggle"
-          class="px-5 h-10 inline-flex items-center justify-center gap-1.5 text-xs font-semibold rounded-pill bg-canvas text-ink border border-hairline hover:bg-canvas-soft-2 cursor-pointer focus:outline-none"
+          class="px-5 h-10 inline-flex items-center justify-center gap-1.5 text-xs font-semibold rounded-md bg-primary text-on-primary hover:opacity-90 active:scale-98 transition-[opacity,transform] duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:ring-offset-2 shadow-level-2"
         >
           Start Camera
         </button>
@@ -73,7 +84,8 @@
         <div class="flex items-center justify-between mb-4 pb-2 border-b border-hairline">
           <div class="flex items-center gap-2">
             <span class="w-2 h-2 rounded-full bg-success"></span>
-            <span class="text-xs font-mono font-semibold text-ink">QR Decoded Successfully</span>
+            <span class="text-xs font-mono font-semibold text-ink">Decoded Successfully</span>
+            <span id="decoded-format-badge" class="px-2 py-0.5 text-[10px] font-mono font-semibold bg-canvas-soft-2 border border-hairline text-ink rounded-sm uppercase ml-2">QR_CODE</span>
           </div>
           <button id="btn-clear-result" class="text-xs text-mute hover:text-ink cursor-pointer focus:outline-none">Clear</button>
         </div>
@@ -181,16 +193,16 @@
   function bindScannerEvents() {
     // Mode toggles
     btnScanFile.addEventListener('click', () => {
-      btnScanFile.className = "flex-1 py-2 text-xs font-medium bg-canvas border border-hairline text-ink rounded-sm focus:outline-none cursor-pointer";
-      btnScanCamera.className = "flex-1 py-2 text-xs font-medium text-body hover:text-ink rounded-sm focus:outline-none cursor-pointer";
+      btnScanFile.className = "flex-1 py-2 text-xs font-medium bg-canvas border border-hairline text-ink rounded-md focus:outline-none cursor-pointer";
+      btnScanCamera.className = "flex-1 py-2 text-xs font-medium text-body hover:text-ink rounded-md focus:outline-none cursor-pointer";
       paneFile.classList.remove('hidden');
       paneCamera.classList.add('hidden');
       stopCameraScanner();
     });
 
     btnScanCamera.addEventListener('click', () => {
-      btnScanCamera.className = "flex-1 py-2 text-xs font-medium bg-canvas border border-hairline text-ink rounded-sm focus:outline-none cursor-pointer";
-      btnScanFile.className = "flex-1 py-2 text-xs font-medium text-body hover:text-ink rounded-sm focus:outline-none cursor-pointer";
+      btnScanCamera.className = "flex-1 py-2 text-xs font-medium bg-canvas border border-hairline text-ink rounded-md focus:outline-none cursor-pointer";
+      btnScanFile.className = "flex-1 py-2 text-xs font-medium text-body hover:text-ink rounded-md focus:outline-none cursor-pointer";
       paneCamera.classList.remove('hidden');
       paneFile.classList.add('hidden');
     });
@@ -270,13 +282,15 @@
     
     resultCard.classList.add('hidden');
     
-    html5QrCodeInstance.scanFile(file, true)
-      .then(decodedText => {
-        showScannedResult(decodedText);
+    html5QrCodeInstance.scanFileV2(file, true)
+      .then(html5qrcodeResult => {
+        const decodedText = html5qrcodeResult.decodedText;
+        const formatName = html5qrcodeResult.result?.format?.formatName || 'Unknown';
+        showScannedResult(decodedText, false, formatName);
       })
       .catch(err => {
         console.warn("Decoding file failed:", err);
-        showScannedResult("Error decoding QR Code image. Make sure the file is a clear, unwarped QR Code.", true);
+        showScannedResult("Error decoding image. Make sure the file is a clear, unwarped QR code or barcode.", true);
       });
   }
 
@@ -294,9 +308,10 @@
       try {
         await html5QrCodeInstance.start(
           { facingMode: "environment" },
-          { fps: 15, qrbox: { width: 220, height: 220 } },
-          (decodedText) => {
-            showScannedResult(decodedText);
+          { fps: 15, qrbox: { width: 280, height: 180 } },
+          (decodedText, decodedResult) => {
+            const formatName = decodedResult.result?.format?.formatName || 'Unknown';
+            showScannedResult(decodedText, false, formatName);
             // Flash a beep or stop camera on first successful scan
             stopCameraScanner();
           },
@@ -307,13 +322,13 @@
         
         isCameraActive = true;
         camToggle.innerText = "Stop Camera Feed";
-        camToggle.classList.remove('bg-canvas', 'text-ink');
-        camToggle.classList.add('bg-error-soft', 'text-error-deep', 'border-error');
+        camToggle.className = "px-5 h-10 inline-flex items-center justify-center gap-1.5 text-xs font-semibold rounded-md bg-canvas text-error border border-error hover:bg-error-soft/10 active:scale-98 transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-error/20";
         camHud.classList.remove('hidden');
       } catch (err) {
         console.error("Camera start blocked:", err);
         alert("Unable to access camera feed. Verify camera permissions or ensure no other applications are using the camera.");
         camToggle.innerText = "Start Camera";
+        camToggle.className = "px-5 h-10 inline-flex items-center justify-center gap-1.5 text-xs font-semibold rounded-md bg-primary text-on-primary hover:opacity-90 active:scale-98 transition-[opacity,transform] duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:ring-offset-2 shadow-level-2";
       } finally {
         camLoading.classList.add('hidden');
         camToggle.disabled = false;
@@ -329,15 +344,25 @@
       } catch (e) {}
       isCameraActive = false;
       camToggle.innerText = "Start Camera";
-      camToggle.className = "px-5 h-10 inline-flex items-center justify-center gap-1.5 text-xs font-semibold rounded-pill bg-canvas text-ink border border-hairline hover:bg-canvas-soft-2 cursor-pointer focus:outline-none";
+      camToggle.className = "px-5 h-10 inline-flex items-center justify-center gap-1.5 text-xs font-semibold rounded-md bg-primary text-on-primary hover:opacity-90 active:scale-98 transition-[opacity,transform] duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:ring-offset-2 shadow-level-2";
       camHud.classList.add('hidden');
     }
   }
 
   // Presentation scanned outputs
-  function showScannedResult(text, isError = false) {
+  function showScannedResult(text, isError = false, formatName = '') {
     resultText.innerText = text;
     resultCard.classList.remove('hidden');
+
+    const formatBadge = document.getElementById('decoded-format-badge');
+    if (formatBadge) {
+      if (formatName && !isError) {
+        formatBadge.innerText = formatName.replace(/_/g, ' ');
+        formatBadge.classList.remove('hidden');
+      } else {
+        formatBadge.classList.add('hidden');
+      }
+    }
 
     if (isError) {
       btnVisitScanned.classList.add('hidden');

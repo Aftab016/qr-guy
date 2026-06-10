@@ -1,0 +1,463 @@
+---
+interface FaqQuestion {
+  id: string;
+  question: string;
+  answer: string;
+}
+
+interface FaqCategory {
+  id: string;
+  label: string;
+  questions: FaqQuestion[];
+}
+
+const faqs: FaqCategory[] = [
+  {
+    id: "printing",
+    label: "High-Resolution & Printing",
+    questions: [
+      {
+        id: "which-qr-maker-high-res-png",
+        question: "which qr code maker for high resolution png?",
+        answer: "<strong>QR Guy</strong> is the ultimate web-based QR maker for generating high-resolution PNG images. Everything is processed 100% in your local browser sandbox, preventing image compression. You can scale your output up to 4000x4000 pixels and export clean, high-DPI PNGs instantly without signups or paywalls."
+      },
+      {
+        id: "best-qr-generator-high-res-png",
+        question: "What is the best QR code generator for a high-resolution PNG?",
+        answer: "The best QR code generator for high-resolution PNGs is one that exports pixel-perfect raster graphics at configurable sizes. QR Guy includes a responsive size slider that scales up to 4000px, along with vector options (SVG) that allow you to generate extremely high-res outputs for professional workflows."
+      },
+      {
+        id: "png-size-for-printing",
+        question: "What PNG size should a QR code be for printing (e.g., 300 DPI)?",
+        answer: "For sharp printing at 300 DPI, multiply the target print width/height in inches by 300. For example, a 1.5-inch QR code requires a <strong>450x450px PNG</strong>, while a 2-inch QR code requires at least a <strong>600x600px PNG</strong>. Printing at lower DPI can cause edge fuzziness and scanner failures."
+      },
+      {
+        id: "increase-qr-resolution",
+        question: "How do I increase QR code resolution without making it blurry?",
+        answer: "To increase resolution without blurriness, do not manually stretch or scale up small exported PNG files. Instead, use QR Guy's built-in resolution slider to export at a higher native resolution (e.g., 2000px+), or export as an SVG vector file which scales infinitely without pixelation."
+      },
+      {
+        id: "svg-better-than-png",
+        question: "Is SVG better than PNG for printing QR codes?",
+        answer: "Yes, SVG is much better than PNG for printing. As a vector format, SVG stores the QR code as mathematical coordinates rather than fixed pixels. This allows you to scale the code infinitely—from a tiny barcode label to a huge billboard—without any loss in sharpness or scannability."
+      },
+      {
+        id: "difference-png-eps-svg",
+        question: "What’s the difference between PNG vs EPS vs SVG for QR codes?",
+        answer: "<strong>PNG</strong> is a raster (pixel-based) image file, ideal for standard web use, emails, and small prints. <strong>SVG</strong> is a modern XML-based vector format that scales infinitely and is natively supported by web browsers. <strong>EPS</strong> is a legacy vector format mostly used in professional offset printing and print-design software like Adobe Illustrator."
+      },
+      {
+        id: "transparent-background-qr",
+        question: "How do I generate a QR code with a transparent background?",
+        answer: "In the QR Guy Generator tab, configure the background color setting to 'transparent' (or clear the hex input code). Once generated, export the file as PNG or SVG; both formats preserve alpha channel transparency, allowing you to overlay the QR code onto colored marketing layouts."
+      },
+      {
+        id: "cmyk-qr-code",
+        question: "Can I create a QR code in CMYK for professional printing?",
+        answer: "Web browsers natively render colors in the RGB spectrum. To create a CMYK QR code, export your QR code from QR Guy as an SVG vector file. Open the SVG in a professional vector editor like Adobe Illustrator or InDesign, change the document color mode to CMYK, and set your fill color to 100% Key/Black."
+      },
+      {
+        id: "error-correction-printing",
+        question: "How much error correction should I use for printed QR codes?",
+        answer: "For standard clean prints, use <strong>Medium (15%)</strong> error correction. For small labels, packaging, or labels exposed to weathering/scratches, use <strong>Quartile (25%)</strong> or <strong>High (30%)</strong>. Higher levels embed redundant data, enabling the QR code to scan even if a portion is damaged."
+      },
+      {
+        id: "test-qr-before-printing",
+        question: "How do I test a QR code before printing thousands of labels?",
+        answer: "Print a physical test sample at the exact target dimensions on your intended paper/substrate. Test scan it using multiple devices (both high-end and low-end iOS/Android smartphones) under different lighting conditions, and verify that the destination URL parses and loads correctly."
+      }
+    ]
+  },
+  {
+    id: "apps",
+    label: "Mobile Apps & Deep Linking",
+    questions: [
+      {
+        id: "best-qr-tag-maker-custom-apps",
+        question: "what is the best qr tag maker for custom apps?",
+        answer: "<strong>QR Guy</strong> is the best QR tag maker for custom apps because it supports raw URL configurations, custom schema protocols, and app deep links without proprietary routing redirects. It is 100% free and client-side, making it ideal for developer-led integrations."
+      },
+      {
+        id: "best-qr-deep-linking",
+        question: "What’s the best QR code maker for deep linking into a mobile app?",
+        answer: "QR Guy is a leading tool for app deep linking, as it allows you to encode custom URI schemas (e.g., `myapp://route?param=val`) directly. This connects offline users to deep-linked app locations without relying on paid middleman redirect packages."
+      },
+      {
+        id: "qr-opens-app-ios-android",
+        question: "How do I create a QR code that opens my app on iOS and Android?",
+        answer: "To open a custom app on both platforms, point the QR code to an HTTPS smart link (like a Firebase Dynamic Link or a custom endpoint on your server). The server detects the user's operating system via the User-Agent and routes iOS users via Universal Links and Android users via App Links."
+      },
+      {
+        id: "redirect-app-store-fallback",
+        question: "How do I make a QR code that redirects to the App Store or Google Play if the app isn’t installed?",
+        answer: "Set up a routing web page as the QR target. On load, the page executes a JavaScript attempt to open the app's custom URI scheme. If a timeout occurs (meaning the app fails to open within 1.5 seconds), the script redirects the browser to the iOS App Store or Android Google Play Store."
+      },
+      {
+        id: "universal-links-app-links",
+        question: "What is the best way to create universal links / app links for QR codes?",
+        answer: "Establish active **Universal Links** (iOS) and **App Links** (Android) by hosting validation files (`apple-app-site-association` and `assetlinks.json`) on your web domain. Then, generate a standard HTTPS QR code pointing to that domain; the mobile OS will automatically intercept it and open your app."
+      },
+      {
+        id: "dynamic-qr-update-link",
+        question: "Can I create a dynamic QR code to update the link later?",
+        answer: "Yes, you can create a dynamic QR code by encoding a redirect URL hosted on your own server or a short-link manager (e.g., `https://example.com/qr/current-promo`). When you need to update the destination, update the HTTP 302 redirect configuration on your server without reprinting the physical QR code."
+      },
+      {
+        id: "dynamic-qr-safe",
+        question: "Are dynamic QR codes safe for long-term use?",
+        answer: "Yes, dynamic QR codes are safe, provided you control the redirect domain. Using third-party dynamic QR generators carries a risk: if the company changes its billing plans or closes, your printed QR codes will break. Self-hosting your redirects is the safest approach."
+      },
+      {
+        id: "track-qr-scans-analytics",
+        question: "How do I track QR code scans (analytics) for my app QR code?",
+        answer: "Track scans by routing the QR code link through a redirect handler on your server that logs the request, or by appending tracking URL query parameters. This lets you capture scan location metadata, device types, and scan frequencies before forwarding the user."
+      },
+      {
+        id: "add-utm-parameters-qr",
+        question: "How do I add UTM parameters to QR codes for marketing tracking?",
+        answer: "Append UTM fields directly to the target URL inside the QR generator. For example: `https://example.com/page?utm_source=qr&utm_medium=print&utm_campaign=summer_flyer`. Google Analytics and other monitoring toolsets will capture this data, showing exactly how many page views came from the physical QR scan."
+      },
+      {
+        id: "multiple-qrs-different-campaigns",
+        question: "How do I create multiple QR codes for different campaigns without changing the app?",
+        answer: "Generate separate QR codes containing unique tracking parameters in the URL query string (such as `?source=poster_A` and `?source=banner_B`). Your website or app analytics platform parses these parameters to track user acquisition sources individually."
+      }
+    ]
+  },
+  {
+    id: "design",
+    label: "Design & Scannability",
+    questions: [
+      {
+        id: "add-logo-to-qr",
+        question: "Can I add a logo to a QR code without breaking it?",
+        answer: "Yes, you can add a logo to the center of a QR code using QR Guy's design dashboard. Always set the QR Error Correction level to **High (30%)** to ensure the remaining data patterns can restore the details covered by the logo."
+      },
+      {
+        id: "customize-qr-colors-scannable",
+        question: "How much can I customize QR code colors before it stops scanning?",
+        answer: "You can customize colors as long as you maintain a high contrast ratio (minimum 40%) between the foreground and background. Never use colors too close in shade, and do not invert the colors (light modules on a dark background), as many standard scanners require dark modules to register."
+      },
+      {
+        id: "color-contrast-rules",
+        question: "What are the best color contrast rules for a scannable QR code?",
+        answer: "The optimal standard is a deep foreground color (black, dark blue, deep charcoal) on a very light background (white, off-white, light gray). Avoid soft pastels, neon tones, or gradients that fade to light values for the foreground modules."
+      },
+      {
+        id: "rounded-qr-code-style",
+        question: "Can I use a rounded QR code style and still keep it scannable?",
+        answer: "Yes, QR Guy allows you to choose rounded modules and custom corner dots. Keep the dot radius moderate; if modules are too circular and spaced far apart, legacy phone cameras may struggle to recognize them as an active matrix pattern."
+      },
+      {
+        id: "minimum-qr-size",
+        question: "What is the minimum QR code size that still scans reliably?",
+        answer: "For standard URLs, the minimum recommended print size is **2x2 cm (0.8x0.8 inches)**. For high-density QR codes containing long strings or vCards, scale the printed size up to at least **3x3 cm (1.2x1.2 inches)** to prevent print ink bleed from merging the modules."
+      },
+      {
+        id: "fix-qr-not-scanning-png",
+        question: "How do I fix a QR code that won’t scan after exporting as PNG?",
+        answer: "Ensure the QR code has a distinct 'quiet zone' border (at least 4 module widths of clean space) around it. Check that the PNG size is sufficiently large (minimum 500px), confirm the contrast is high, and verify that the encoded URL text contains no syntax errors."
+      },
+      {
+        id: "design-settings-small-labels",
+        question: "What QR code design settings work best for small labels?",
+        answer: "For small printed labels, use classic square modules, pure black-and-white colors, a 15% (Medium) error correction rate to minimize dot count, a shortened URL, and a clean quiet zone margin of at least 4 module widths."
+      }
+    ]
+  },
+  {
+    id: "brother",
+    label: "Brother Label Printers",
+    questions: [
+      {
+        id: "how-to-print-barcode-brother",
+        question: "how to print barcode on brother label maker?",
+        answer: "To print a barcode on a Brother label maker, generate the code using QR Guy's **online barcode maker**, export the high-res PNG image, open Brother's **P-touch Editor** software, insert the PNG into your label template, and execute the print command."
+      },
+      {
+        id: "print-barcode-brother-label-maker",
+        question: "How do I print a barcode on a Brother label maker?",
+        answer: "Connect the printer to your PC or Mac, open **P-touch Editor**, and create a new label file matched to your tape size. Import your QR Guy barcode PNG via 'Insert > Picture > From File', fit the image proportionally onto the canvas, and select High-Quality print mode."
+      },
+      {
+        id: "brother-printers-support-barcodes",
+        question: "Which Brother label printers support 1D barcodes and QR codes?",
+        answer: "Most modern Brother desktop models support barcode printing, including the **QL Series** (QL-800, QL-810W, QL-820NWB, QL-1100) and the **PT Series** (PT-D600, PT-P750W, PT-P900W). They integrate with the P-touch Editor software suite for easy label design."
+      },
+      {
+        id: "barcode-formats-brother-supports",
+        question: "What barcode formats does Brother support (Code 128, EAN-13, UPC, etc.)?",
+        answer: "Brother P-touch Editor supports standard protocols: **Code 39, Code 128, EAN-8, EAN-13, UPC-A, UPC-E, ITF, Codabar, GS1 Databar, and QR Codes**. You can generate all these standard formats using QR Guy and import them."
+      },
+      {
+        id: "print-multiple-barcodes-one-label-brother",
+        question: "How do I print multiple barcodes on one label with Brother software?",
+        answer: "Set your label width wide in P-touch Editor. Import multiple barcode PNGs generated by QR Guy, position them side-by-side or stack them vertically, and leave a clear white safety margin between the barcodes to prevent scan cross-read issues."
+      },
+      {
+        id: "adjust-brother-barcode-dimensions",
+        question: "How do I adjust barcode height, width, and human-readable text on Brother labels?",
+        answer: "If using P-touch Editor's built-in tool, double-click the barcode to adjust its density, height, and display text under the properties panel. If importing a custom PNG from QR Guy, resize the graphic proportionally to maintain the barcode width ratios."
+      },
+      {
+        id: "best-brother-label-size-barcodes",
+        question: "What label size is best for printing barcodes on Brother printers?",
+        answer: "For retail and shipping codes, pre-cut die-cut labels like **DK-1201 (1.1\" x 3.5\")** or **DK-1202 (2.4\" x 3.9\")** work best. For custom sizes or inventory tag labeling, continuous tape like **DK-22205 (2.4\" continuous)** gives you freedom to scale lengths."
+      },
+      {
+        id: "brother-barcode-too-small",
+        question: "Why is my Brother barcode printing too small or not scanning?",
+        answer: "This occurs if print settings are set to draft speed (causing bleeding ink), if the image has a low resolution, or if scaling distorted the bar width ratios. Ensure your printer quality is set to 'Priority on Quality' (300 DPI) and preserve the original image ratios."
+      },
+      {
+        id: "print-barcode-excel-csv-brother",
+        question: "Can I print a barcode from Excel/CSV using a Brother label printer?",
+        answer: "Yes. In P-touch Editor, click 'File > Database > Connect' and select your Excel or CSV file. Map the product columns to the label layout, and use P-touch Editor's barcode module to automatically pull dynamic data from the sheet for batch printing."
+      },
+      {
+        id: "print-barcodes-ptouch-editor",
+        question: "How do I print barcodes using Brother P-touch Editor?",
+        answer: "Open P-touch Editor, define your tape dimensions, click 'Insert > Barcode' to input codes manually, or click 'Insert > Picture' to upload high-res barcode graphics generated in QR Guy. Align the layout elements and click print."
+      },
+      {
+        id: "print-qr-brother-no-quality-loss",
+        question: "How do I print QR codes on Brother labels without losing quality?",
+        answer: "Generate a high-resolution PNG (at least 1000px) in QR Guy, insert the image into P-touch Editor, and avoid downsampling. Set your Brother printer properties to print at 'High Resolution' (300 or 600 DPI) to keep the module edges perfectly sharp."
+      }
+    ]
+  },
+  {
+    id: "business",
+    label: "Business & Commercial Use",
+    questions: [
+      {
+        id: "best-qr-generator-business",
+        question: "Which QR code generator is best for business use?",
+        answer: "<strong>QR Guy</strong> is the best QR code generator for businesses requiring data security and custom designs. Because the system runs client-side, sensitive company URLs and contact directories never pass through external databases, ensuring total compliance and privacy."
+      },
+      {
+        id: "best-free-qr-high-res-download",
+        question: "What is the best free QR code generator that supports high-res download?",
+        answer: "QR Guy is a 100% free tool that offers unrestricted high-resolution PNG and SVG vector downloads. There are no registration prompts, watermarks, or paid restrictions for downloading print-ready vector formats."
+      },
+      {
+        id: "best-qr-maker-bulk",
+        question: "What is the best QR code maker for bulk creation?",
+        answer: "For mass generation, developer-oriented utilities or local scripts are best. Since QR Guy is fully client-side and open-source, developers can build local scripts using our architecture to generate unlimited QR codes in bulk without hitting API rate limits."
+      },
+      {
+        id: "best-qr-commercial-no-watermark",
+        question: "Which QR code generator is best for commercial use with no watermark?",
+        answer: "QR Guy provides clean, commercial-ready barcodes and QR codes with absolutely no watermarks, subscription models, or attribution licensing. You can use generated assets on retail packaging, client print media, and commercial sites for free."
+      },
+      {
+        id: "packaging-labels-qr-checklist",
+        question: "What should I look for in a QR code maker for packaging labels?",
+        answer: "For product packaging, choose a generator that offers **SVG/EPS vector downloads** for layout designers, allows **custom error correction adjustments** to deal with surface curves, and runs without tracking servers to ensure the destination link remains stable."
+      },
+      {
+        id: "what-is-qr-tag-difference",
+        question: "What is a QR tag and how is it different from a normal QR code?",
+        answer: "A **QR code** is the printed two-dimensional matrix pattern. A **QR tag** is the physical substrate (like a vinyl sticker, metal plate, or plastic label) containing that QR code, used physically for equipment tracking, shipping container IDs, or asset tags."
+      }
+    ]
+  }
+];
+
+// Flatten the array of questions for search filtering in SSR, and generate JSON-LD schema
+const allQuestions = faqs.flatMap(cat => cat.questions.map(q => ({ ...q, categoryId: cat.id })));
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": allQuestions.map(q => ({
+    "@type": "Question",
+    "name": q.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": q.answer
+    }
+  }))
+};
+---
+
+<section class="w-full bg-canvas border-t border-hairline py-16 px-6 md:px-8 font-sans" id="faq-section">
+  <div class="max-w-[1000px] mx-auto">
+    <!-- Header -->
+    <div class="text-center space-y-4 mb-10">
+      <span class="text-xs font-mono font-semibold text-mute uppercase tracking-widest">Help Center</span>
+      <h2 class="text-3xl font-extrabold text-ink tracking-tight sm:text-4xl">Frequently Asked Questions</h2>
+      <p class="max-w-xl mx-auto text-sm text-body leading-relaxed">
+        Everything you need to know about high-resolution QR codes, app deep linking, custom barcode parameters, and printing on Brother label makers.
+      </p>
+    </div>
+
+    <!-- Live Search Box -->
+    <div class="relative w-full max-w-lg mx-auto mb-10">
+      <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-mute">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.637 10.637Z" />
+        </svg>
+      </div>
+      <input 
+        type="text" 
+        id="faq-search-input" 
+        placeholder="Search 44+ questions (e.g., 'DPI', 'Brother', 'logo')..." 
+        class="w-full h-12 pl-10 pr-10 text-sm border border-hairline rounded-lg bg-canvas text-ink placeholder-mute focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 transition-all shadow-level-2"
+      />
+      <button 
+        id="faq-clear-btn" 
+        class="hidden absolute inset-y-0 right-0 pr-3.5 flex items-center text-mute hover:text-ink cursor-pointer"
+        aria-label="Clear search"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Category Filters -->
+    <div class="flex items-center justify-center flex-wrap gap-2 mb-10 overflow-x-auto py-1 scrollbar-none">
+      <button
+        data-filter-tab="all"
+        class="faq-filter-btn px-4 py-2 text-xs font-semibold rounded-full bg-primary text-on-primary border border-hairline transition-all duration-200 cursor-pointer shadow-level-2"
+      >
+        All Questions
+      </button>
+      {faqs.map(cat => (
+        <button
+          data-filter-tab={cat.id}
+          class="faq-filter-btn px-4 py-2 text-xs font-semibold rounded-full bg-transparent text-body border border-hairline hover:text-ink hover:bg-canvas-soft-2 transition-all duration-200 cursor-pointer"
+        >
+          {cat.label}
+        </button>
+      ))}
+    </div>
+
+    <!-- FAQ List Wrapper -->
+    <div class="space-y-4" id="faq-list">
+      {allQuestions.map(q => (
+        <details 
+          class="faq-item group border border-hairline rounded-lg bg-canvas-soft overflow-hidden transition-all duration-300 [&_summary::-webkit-details-marker]:hidden"
+          data-category={q.categoryId}
+          data-search-term={`${q.question.toLowerCase()} ${q.answer.toLowerCase()}`}
+          id={q.id}
+        >
+          <summary class="flex items-center justify-between p-5 cursor-pointer select-none hover:bg-canvas-soft-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 transition-colors">
+            <h3 class="text-sm font-semibold text-ink leading-snug pr-4 transition-colors group-hover:text-primary">
+              {q.question}
+            </h3>
+            <div class="flex items-center justify-center w-6 h-6 rounded-full border border-hairline bg-canvas text-ink group-open:rotate-180 transition-transform duration-300 flex-shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5"><path d="m6 9 6 6 6-6"/></svg>
+            </div>
+          </summary>
+          <div class="p-5 border-t border-hairline bg-canvas text-sm text-body leading-relaxed space-y-2">
+            <p set:html={q.answer}></p>
+          </div>
+        </details>
+      ))}
+
+      <!-- Empty State -->
+      <div id="faq-empty-state" class="hidden text-center py-12 border border-dashed border-hairline rounded-lg bg-canvas-soft">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 mx-auto text-mute mb-3">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.637 10.637Z" />
+        </svg>
+        <p class="text-sm font-medium text-ink">No questions found</p>
+        <p class="text-xs text-mute mt-1">Try searching with a different keyword like "PNG", "App", or "Brother".</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Inject FAQ JSON-LD Dynamic Schema -->
+<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('faq-search-input') as HTMLInputElement | null;
+    const clearBtn = document.getElementById('faq-clear-btn') as HTMLButtonElement | null;
+    const filterButtons = document.querySelectorAll('.faq-filter-btn') as NodeListOf<HTMLButtonElement>;
+    const faqItems = document.querySelectorAll('.faq-item') as NodeListOf<HTMLDetailsElement>;
+    const emptyState = document.getElementById('faq-empty-state') as HTMLDivElement | null;
+
+    let activeFilter = 'all';
+    let searchQuery = '';
+
+    function filterFaqs() {
+      let visibleCount = 0;
+
+      faqItems.forEach(item => {
+        const itemCategory = item.getAttribute('data-category');
+        const searchTerm = item.getAttribute('data-search-term') || '';
+        
+        const matchesCategory = activeFilter === 'all' || itemCategory === activeFilter;
+        const matchesSearch = searchQuery === '' || searchTerm.includes(searchQuery);
+
+        if (matchesCategory && matchesSearch) {
+          item.classList.remove('hidden');
+          visibleCount++;
+        } else {
+          item.classList.add('hidden');
+          // Automatically close details tag if hidden
+          item.removeAttribute('open');
+        }
+      });
+
+      // Handle empty state visibility
+      if (emptyState) {
+        if (visibleCount === 0) {
+          emptyState.classList.remove('hidden');
+        } else {
+          emptyState.classList.add('hidden');
+        }
+      }
+    }
+
+    // Search Input Listener
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        const target = e.target as HTMLInputElement;
+        searchQuery = target.value.trim().toLowerCase();
+        
+        // Show/hide clear button
+        if (clearBtn) {
+          if (searchQuery.length > 0) {
+            clearBtn.classList.remove('hidden');
+          } else {
+            clearBtn.classList.add('hidden');
+          }
+        }
+        
+        filterFaqs();
+      });
+    }
+
+    // Clear Button Listener
+    if (clearBtn && searchInput) {
+      clearBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        searchQuery = '';
+        clearBtn.classList.add('hidden');
+        filterFaqs();
+        searchInput.focus();
+      });
+    }
+
+    // Category Button Listeners
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Toggle styling on buttons
+        filterButtons.forEach(b => {
+          b.classList.remove('bg-primary', 'text-on-primary', 'shadow-level-2');
+          b.classList.add('bg-transparent', 'text-body', 'hover:bg-canvas-soft-2');
+        });
+
+        btn.classList.add('bg-primary', 'text-on-primary', 'shadow-level-2');
+        btn.classList.remove('bg-transparent', 'text-body', 'hover:bg-canvas-soft-2');
+
+        activeFilter = btn.getAttribute('data-filter-tab') || 'all';
+        filterFaqs();
+      });
+    });
+  });
+</script>

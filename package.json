@@ -7,9 +7,10 @@
   },
   "scripts": {
     "dev": "astro dev",
+    "prebuild": "rm -rf dist .astro",
     "build": "astro build",
     "preview": "astro preview",
-    "deploy": "astro build && wrangler deploy",
+    "deploy": "npm run build && wrangler deploy",
     "astro": "astro"
   },
   "dependencies": {

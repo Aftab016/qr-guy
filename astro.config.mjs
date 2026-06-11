@@ -5,8 +5,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://aftab016.github.io/qr-guy.com/',
-  base: '/qr-guy.com/',
+  site: 'https://qrguy.com',
   integrations: [sitemap()],
   vite: {
     plugins: [tailwindcss()],

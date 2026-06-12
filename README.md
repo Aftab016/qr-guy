@@ -11,24 +11,82 @@
 
 ## 🧞 Local Development
 
-To get this project up and running on your local machine, follow these steps.
+To get this project up and running on your local machine, choose either the automated launcher (Windows only) or the manual steps (all operating systems).
 
 ### Prerequisites
 
-* Node.js (v18.14.1 or higher)
-* npm, pnpm, or yarn
+Regardless of which method you choose, make sure you have:
+* **Node.js** (v18.14.1 or higher; recommended v22.12.0+) installed. You can download it from [nodejs.org](https://nodejs.org/).
+* A package manager (npm comes pre-installed with Node.js).
 
-### Commands
+---
 
-All commands are run from the root of the project in your terminal:
+### 🚀 Option A: Automated Launch (Windows Users)
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs all project dependencies.               |
-| `npm run dev`             | Starts the local dev server at `localhost:4321`. |
-| `npm run build`           | Builds the production site into `./dist/`.       |
-| `npm run preview`         | Previews your local build before deploying.      |
-| `npm run astro ...`       | Run CLI commands like `astro add` or `astro check`. |
+We have provided a convenient batch script `run-windows.bat` to automate the setup and run the development environment in one click.
+
+#### Step-by-Step Instructions:
+1. Locate the [run-windows.bat](file:///run/media/trojan/My%20Files/Web%20Projects/qr-guy.com/run-windows.bat) file in the root of the project directory.
+2. **Right-click** on [run-windows.bat](file:///run/media/trojan/My%20Files/Web%20Projects/qr-guy.com/run-windows.bat) and select **"Run as administrator"**.
+3. A command prompt window will open. If you did not run it as administrator, it will prompt you for administrative privileges and automatically elevate itself.
+4. **What the script does automatically:**
+   - Automatically navigates to the project directory.
+   - Verifies that Node.js is installed.
+   - Installs all project requirements and dependencies (`npm install`).
+   - Automatically opens your default web browser to the development site at `http://localhost:4321/qr-guy.com/`.
+   - Starts the development server (`npm run dev`).
+5. Leave the window open while you work. To shut down the server, simply close the command prompt window or press `Ctrl + C` in it.
+
+---
+
+### 🛠️ Option B: Manual Setup & Build Steps (Cross-platform)
+
+If you are on macOS, Linux, or prefer using the command line manually on Windows, follow these step-by-step instructions.
+
+#### Step 1: Install Dependencies
+Open your terminal or command prompt in the project root directory and run the following command to download and install all necessary dependencies:
+```bash
+npm install
+```
+
+#### Step 2: Run the Development Server
+To launch the development server, run:
+```bash
+npm run dev
+```
+Once the server starts, it will output the local address:
+```text
+  ┃ Local    http://localhost:4321/qr-guy.com/
+```
+Open your web browser and navigate manually to `http://localhost:4321/qr-guy.com/` to view and interact with the application. The server features Hot Module Replacement (HMR) and will automatically refresh when you make changes to the files.
+
+#### Step 3: Build the Project for Production
+When you are ready to prepare the website for production/deployment, run the build command:
+```bash
+npm run build
+```
+This script will:
+1. Automatically run the `prebuild` script to clean out any old build directories (`dist/` and `.astro/`).
+2. Compile and optimize the entire application using Astro.
+3. Output the static production-ready files to the `./dist/` directory.
+
+#### Step 4: Preview the Production Build
+To test the generated production build locally before deploying it, run:
+```bash
+npm run preview
+```
+This starts a local static file server pointing to the `./dist/` directory so you can confirm everything builds and displays correctly.
+
+---
+
+### 📋 Command Summary Reference
+
+| Command             | Action                                                             |
+| :------------------ | :----------------------------------------------------------------- |
+| `npm install`       | Installs all project dependencies.                                 |
+| `npm run dev`       | Starts the local dev server at `http://localhost:4321/qr-guy.com/`. |
+| `npm run build`     | Cleans old files and compiles the production site into `./dist/`.  |
+| `npm run preview`   | Previews your local build before deploying.                        |
 
 ## 📂 Project Structure
 

@@ -29,3 +29,10 @@ skills/
 .vscode/
 .kilocode/
 .agents/
+
+# custom ignored files
+DESIGN.md
+design.md
+tsconfig.json
+skills-lock.json
+

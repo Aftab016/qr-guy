@@ -1,1 +1,10 @@
-aftab
+{
+    "name": "aftab",
+    "pages": {
+        "build": {
+            "command": "npm run build",
+            "directory": "dist",
+            "worker": "functions/index.js"
+        }
+    }
+}

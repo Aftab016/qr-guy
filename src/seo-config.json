@@ -1,0 +1,23 @@
+{
+  "googleAnalyticsId": "",
+  "defaultTitle": "QR Guy — Free QR Maker & Barcode Maker Online",
+  "defaultDescription": "Create and scan QR codes & barcodes online. QR Guy is a free, fast, client-side utility.",
+  "defaultKeywords": "qr maker, barcode maker, client-side, scan, qr code generator",
+  "canonicalUrl": "https://yourdomain.com",
+  "ogImage": "https://yourdomain.com/og-image.png",
+  "robots": "index, follow",
+  "schema": {
+    "name": "QR Guy",
+    "alternateName": "qrguy",
+    "url": "https://yourdomain.com",
+    "description": "Create and scan QR codes & barcodes online. 100% client-side, open-source, privacy-first.",
+    "featureList": [
+      "Generate QR codes with custom shapes",
+      "Linear and radial gradients",
+      "Embed custom logos",
+      "Export as vector SVG",
+      "Scan QR codes and barcodes",
+      "100% client-side processing"
+    ]
+  }
+}
